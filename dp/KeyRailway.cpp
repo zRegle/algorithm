@@ -73,7 +73,7 @@ int getMinDisVertex(edge* edges, bool* visit, int size) {
  * @param p 起点到各个顶点的路径数组
  */
 void dij(edge** matrix, int from, int vNum, path* p) {
-    int count = 1;  //已遍历的顶点(顶点已被遍历)
+    int count = 1;  //已遍历的顶点(起点已被遍历)
     bool* visit = new bool[vNum + 1];   //确认哪些顶点未被遍历
     visit[from] = true;
     edge* dis = matrix[from];   //起点到各个顶点的距离
