@@ -1,6 +1,3 @@
-//
-// Created by Administrator on 2018/8/4.
-//
 #include <iostream>
 #include <vector>
 #include <climits>
