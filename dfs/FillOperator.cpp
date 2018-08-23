@@ -71,11 +71,11 @@ bool calc(string& s, int target) {
 
 /**
  * dfs构造所有可能的结果
- * @param s 每次递归都要拷贝一份,不能传引用
+ * @param s 每次递归都要拷贝一份
  * @param index 当前要操作的空位
  * @param target 等式右边的数字
  */
-void dfs(string s, int index, int target) {
+void dfs(string& s, int index, int target) {
     if (index == s.length()) {
         if (calc(s, target)) {
             hasSolution = 1;
@@ -83,17 +83,18 @@ void dfs(string s, int index, int target) {
         }
     } else {
         //啥都不填
-        dfs(s, index + 2, target);
+        string space = s;
+        dfs(space, index + 2, target);
 
         //填+
-        string ss = s;
-        ss[index] = '+';
-        dfs(ss, index + 2, target);
+        string add = s;
+        add[index] = '+';
+        dfs(add, index + 2, target);
 
         //填-
-        string sss = s;
-        sss[index] = '-';
-        dfs(sss, index + 2, target);
+        string minus = s;
+        minus[index] = '-';
+        dfs(minus, index + 2, target);
     }
 }
 
