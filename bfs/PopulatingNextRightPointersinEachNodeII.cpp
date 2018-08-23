@@ -37,9 +37,9 @@ public:
         TreeLinkNode* cur = root;
         while (cur) {   //迭代下一层
             while (cur) {   //处理当前层
-                //循环干了几件事
-                //1.从左往右扫, 找到第一个节点, 它的左右子树至少有一个不为空, 把它设置为head
-                //2.连接当前节点的子节点的next指针
+                //循环干了两件事
+                //1.从左往右扫, 找到第一个节点, 它的左右子树至少有一个不为空, 把第一个不为空的子节点设置为head
+                //2.正确填充这一层节点的子节点的next指针
                 if (cur->left) {
                     if (prev) prev->next = cur->left;
                     else head = cur->left;
