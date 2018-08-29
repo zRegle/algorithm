@@ -41,7 +41,7 @@ class Solution {
         if ((i>>1)&1 == 0) {    //等价于i%2==0
             list.add(cur.val);  //加到链表尾部
         } else {
-         list.addFirst(cur.val); //加到链表头部
+         list.add(0, cur.val); //加到链表头部
         }
         travel(res, level + 1, cur.left);
         travel(res, level + 1, cur.right);
