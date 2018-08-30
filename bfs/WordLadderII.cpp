@@ -23,8 +23,10 @@ using namespace std;
  */
 
 /*
- * 我的思路(超时):
+ * 我的思路:
  * 典型bfs结构, 队列中存的是变化的路径, 而不是单词
+ *
+ * 结果: 39/39 Test Case, 1504ms擦边通过
  */
 class Solution {
 public:
@@ -79,3 +81,17 @@ public:
         return true;
     }
 };
+
+int main() {
+    string s = "hit", t = "cog";
+    string a[] = {"hot","dot","dog","lot","log","cog"};
+    vector<string> v(a, a+7);
+    Solution ss;
+    auto res = ss.ladderLength(s, t, v);
+    for (vector<string>& path :res) {
+        for (string& str : path)
+            cout<<str<<" ";
+        cout<<endl;
+    }
+    return 0;
+}
