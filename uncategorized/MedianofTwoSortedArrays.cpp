@@ -54,8 +54,8 @@ public:
                 if ((m + n) % 2 == 1)  return maxLeft; //如果是奇数, max_left就是中位数
 
                 int minRight = 0;
-                if (i == m)  minRight = B[j]; //A数组的
-                else if (j == n)  minRight = A[i]; 
+                if (i == m)  minRight = B[j]; //A数组的最大元素都比B数组的右半部分的最小元素要小, min_right直接取B[j]
+                else if (j == n)  minRight = A[i]; //B数组的最大元素都比A数组的右半部分的最小元素要小, min_right直接取A[i]
                 else  minRight = min(B[j], A[i]); 
 
                 return (maxLeft + minRight) / 2.0;
