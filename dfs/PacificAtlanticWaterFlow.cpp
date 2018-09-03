@@ -37,9 +37,9 @@ public:
         pac[i][j] = 0;
         int top = 0, left = 0, down = 0, right = 0;
         if (i > 0 && matrix[i][j] >= matrix[i-1][j]) top = pacific(i-1, j, pac, matrix);
-        if (j > 0 && matrix[i][j] >= matrix[i][j-1]) left = pacific(i, j-1, pac, matrix);
-        if (i < row-1 && matrix[i][j] >= matrix[i+1][j]) down = pacific(i+1, j, pac, matrix);
-        if (j < column-1 && matrix[i][j] >= matrix[i][j+1]) right = pacific(i, j+1, pac, matrix);
+        if (top != 2) { if (j > 0 && matrix[i][j] >= matrix[i][j-1]) left = pacific(i, j-1, pac, matrix); }
+        if (top != 2 && left != 2) { if (i < row-1 && matrix[i][j] >= matrix[i+1][j]) down = pacific(i+1, j, pac, matrix); }
+        if (top != 2 && left != 2 && down != 2) { if (j < column-1 && matrix[i][j] >= matrix[i][j+1]) right = pacific(i, j+1, pac, matrix); }
         pac[i][j] = (top == 2 || left == 2 || down == 2 || right == 2) ? 2 : 1;
         return pac[i][j];
     }
@@ -50,9 +50,9 @@ public:
         atlan[i][j] = 0;
         int top = 0, left = 0, down = 0, right = 0;
         if (i > 0 && matrix[i][j] >= matrix[i-1][j]) top = atlantic(i-1, j, atlan, matrix);
-        if (j > 0 && matrix[i][j] >= matrix[i][j-1]) left = atlantic(i, j-1, atlan, matrix);
-        if (i < row-1 && matrix[i][j] >= matrix[i+1][j]) down = atlantic(i+1, j, atlan, matrix);
-        if (j < column-1 && matrix[i][j] >= matrix[i][j+1]) right = atlantic(i, j+1, atlan, matrix);
+        if (top != 2) { if (j > 0 && matrix[i][j] >= matrix[i][j-1]) left = atlantic(i, j-1, atlan, matrix); }
+        if (top != 2 && left != 2) { if (i < row-1 && matrix[i][j] >= matrix[i+1][j]) down = atlantic(i+1, j, atlan, matrix); }
+        if (top != 2 && left != 2 && down != 2) { if (j < column-1 && matrix[i][j] >= matrix[i][j+1]) right = atlantic(i, j+1, atlan, matrix); }
         atlan[i][j] = (top == 2 || left == 2 || down == 2 || right == 2) ? 2 : 1;
         return atlan[i][j];
     }
