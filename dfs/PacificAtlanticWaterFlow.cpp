@@ -12,10 +12,10 @@ using namespace std;
  *      ~  1  2  2  3 (5) *
  *      ~  3  2  3 (4)(4) *
  *      ~  2  4 (5) 3  1  *
- *      ~ (6)(7) 1  4  5  * 
+ *      ~ (6)(7) 1  4  5  *
  *      ~ (5) 1  1  2  4  *
  *         *  *  *  *  * Atlantic
- * 结果: [[0,4], [1,3], [1,4], [2,2], [3,0], [3,1], [4,0]] 
+ * 结果: [[0,4], [1,3], [1,4], [2,2], [3,0], [3,1], [4,0]]
  *       带括号的就是符合要求的格子
  *
  * 思路: 暴力dfs就行, 过程中需要记录已经遍历过的格子
@@ -45,8 +45,6 @@ public:
             for (int j = 0; j < column; ++j) {
                 int flow_pacific = pacific(i, j, pac, matrix);
                 int flow_atlantic = atlantic(i, j, atlan, matrix);
-                if (flow_pacific == 1) flow_pacific = re_check(i, j, pac);
-                if (flow_atlantic == 1) flow_atlantic = re_check(i, j, atlan);
                 if (flow_pacific == 2 && flow_atlantic == 2)
                     res.emplace_back(pair<int, int>(i, j));
             }
@@ -54,30 +52,34 @@ public:
         return res;
     }
 
-    //在递归中, 从前一个格子到达当前格子的路径不符合要求, 但是在循环中可以从当前格子返回前一个格子的路径合法
-    //所以我们确认是否可以从当前格子出发, 经过之前循环过的格子, 流到大洋    
-    int re_check(int i, int j, vector<vector<int>>& res) {
+    //在dfs的过程中, 我们可能得知从A出发, 经过B不能流到对应的海洋, 那么在计算完A之后, ocean[B] = 1
+    //但是可能在计算B时, 我们可以从B出发, 经过A流到对应的海洋
+    //如果我们错误地把记录下来的值当做最终的计算结果, 那就会出错
+    //所以我们要重新检查ocean[B]是否可以经过上一行格子或者左边的格子流到对应的海洋
+    int re_check(int i, int j, vector<vector<int>>& ocean, vector<vector<int>>& matrix) {
         int left = 0, top = 0;
-        if (i > 0) top = res[i-1][j];
-        if (j > 0) left = res[i][j-1];
-        return top | left; 
+        if (i > 0 && matrix[i][j] >= matrix[i-1][j]) top = ocean[i-1][j];
+        if (j > 0 && matrix[i][j] >= matrix[i][j-1]) left = ocean[i][j-1];
+        return (top == 2 || left == 2) ? 2 : 1;
     }
 
     int pacific(int i, int j, vector<vector<int>>& pac, vector<vector<int>>& matrix) {
-        if (pac[i][j] != INT_MAX) return pac[i][j]; //已经计算过结果
-        if (i == 0 || j == 0) return pac[i][j] = 2;
-        pac[i][j] = 0;
+        if (pac[i][j] == 2 || !pac[i][j]) return pac[i][j]; //已经计算过结果
+        if (pac[i][j] == 1) return re_check(i, j, pac, matrix); //复检
+        if (i == 0 || j == 0) return pac[i][j] = 2; //就在边缘, 直接流到太平洋
+        pac[i][j] = 0;  //开始计算结果
         int top = 0, left = 0, down = 0, right = 0;
         if (i > 0 && matrix[i][j] >= matrix[i-1][j]) top = pacific(i-1, j, pac, matrix);
         if (top != 2) { if (j > 0 && matrix[i][j] >= matrix[i][j-1]) left = pacific(i, j-1, pac, matrix); }
         if (top != 2 && left != 2) { if (i < row-1 && matrix[i][j] >= matrix[i+1][j]) down = pacific(i+1, j, pac, matrix); }
         if (top != 2 && left != 2 && down != 2) { if (j < column-1 && matrix[i][j] >= matrix[i][j+1]) right = pacific(i, j+1, pac, matrix); }
-        pac[i][j] = top | left | down | right;
+        pac[i][j] = (top == 2 || left == 2 || down == 2 || right == 2) ? 2 : 1;
         return pac[i][j];
     }
 
     int atlantic(int i, int j, vector<vector<int>>& atlan, vector<vector<int>>& matrix) {
-        if (atlan[i][j] != INT_MAX) return atlan[i][j];
+        if (atlan[i][j] == 2 || !atlan[i][j]) return atlan[i][j];
+        if (atlan[i][j] == 1) return re_check(i, j, atlan, matrix);
         if (i == row-1 || j == column-1) return atlan[i][j] = 2;
         atlan[i][j] = 0;
         int top = 0, left = 0, down = 0, right = 0;
@@ -85,23 +87,22 @@ public:
         if (top != 2) { if (j > 0 && matrix[i][j] >= matrix[i][j-1]) left = atlantic(i, j-1, atlan, matrix); }
         if (top != 2 && left != 2) { if (i < row-1 && matrix[i][j] >= matrix[i+1][j]) down = atlantic(i+1, j, atlan, matrix); }
         if (top != 2 && left != 2 && down != 2) { if (j < column-1 && matrix[i][j] >= matrix[i][j+1]) right = atlantic(i, j+1, atlan, matrix); }
-        atlan[i][j] = top | left | down | right;
+        atlan[i][j] = (top == 2 || left == 2 || down == 2 || right == 2) ? 2 : 1;
         return atlan[i][j];
     }
 };
 
 int main() {
     vector<vector<int>> matrix;
-    vector<int> v1({1,2,2,3,5});
-    vector<int> v2({3,2,3,4,4});
-    vector<int> v3({2,4,5,3,1});
-    vector<int> v4({6,7,1,4,5});
-    vector<int> v5({5,1,1,2,4});
-    matrix.push_back(v1);
-    matrix.push_back(v2);
-    matrix.push_back(v3);
-    matrix.push_back(v4);
-    matrix.push_back(v5);
+    int row, column;
+    cin>>row>>column;
+    for (int i = 0; i < row; i++) {
+        vector<int> v(column, INT_MAX);
+        for (int j = 0; j < column; ++j) {
+            cin>>v[j];
+        }
+        matrix.push_back(v);
+    }
     Solution s;
     auto res = s.pacificAtlantic(matrix);
     for (auto p : res) {
