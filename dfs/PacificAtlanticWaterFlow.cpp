@@ -23,11 +23,20 @@ public:
             for (int j = 0; j < column; ++j) {
                 int flow_pacific = pacific(i, j, pac, matrix);
                 int flow_atlantic = atlantic(i, j, atlan, matrix);
-                if (flow_atlantic == 2 && flow_pacific == 2)
+                if (flow_pacific == 1) flow_pacific = re_check(i, j, pac, martix);
+                if (flow_atlantic == 1) flow_atlantic = re_check(i, j, atlan, matrix);
+                if (flow_pacific == 2 && flow_atlantic == 2)
                     res.emplace_back(pair<int, int>(i, j));
             }
         }
         return res;
+    }
+
+    int re_check(int i, int j, vector<vector<int>>& res, vector<vector<int>>& matrix) {
+        int left = 0, top = 0;
+        if (i > 0 && matrix[i][j] >= matrix[i-1][j]) top = res[i-1][j];
+        if (j > 0 && matrix[i][j] >= matrix[i][j-1]) left = res[i][j-1];
+        return (top == 2 || left == 2) ? 2 : 1; 
     }
 
     //TODO, 如何解决在递归中, 从前一个格子到达当前格子的路径不符合要求, 但是在循环中可以从当前格子返回前一个格子的路径合法
