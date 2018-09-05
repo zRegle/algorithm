@@ -92,6 +92,56 @@ public:
     }
 };
 
+/**
+ * 更加优雅的做法, from leetcode
+ *
+ * 基本思路: 从两个大洋出发, 看能否到达某个格子
+ */
+class Solution2 {
+public:
+    vector<pair<int, int>> res;
+    vector<vector<int>> visited;
+
+    /**
+     *
+     * @param matrix 高度矩阵
+     * @param x 横坐标
+     * @param y 纵坐标
+     * @param pre 上一个格子的高度
+     * @param preval 上一个格子的状态, 1代表可以到达太平洋, 2代表可以到达大西洋, 3代表都可以
+     */
+    void dfs(vector<vector<int>>& matrix, int x, int y, int pre, int preval){
+        if (x < 0 || x >= matrix.size() || y < 0 || y >= matrix[0].size()
+            || matrix[x][y] < pre || (visited[x][y] & preval) == preval)
+            //(visit[x][y] & preval) == preval
+            //前一个格子和这个格子都可以流到太平洋或者大西洋, 或者都可以, 表明已经dfs过了
+            return;
+        //如果(visit[x][y] & preval) != preval
+        //证明前一个格子和后一个格子的状态不一致, 需要判断当前格子能否能否达到前一个格子可以到达的大洋
+        //譬如: preval = 1, visit[x][y] = 2, 则当前格子符合最终条件, 加入结果集,
+        //      preval = 1, visit[x][y] = 0, 当前格子可以流到太平洋, 继续判断是否可以流到大西洋
+        visited[x][y] |= preval;
+        if (visited[x][y] == 3) res.emplace_back(pair<int, int>(x, y));
+        dfs(matrix, x + 1, y, matrix[x][y], visited[x][y]); dfs(matrix, x - 1, y, matrix[x][y], visited[x][y]);
+        dfs(matrix, x, y + 1, matrix[x][y], visited[x][y]); dfs(matrix, x, y - 1, matrix[x][y], visited[x][y]);
+    }
+
+    vector<pair<int, int>> pacificAtlantic(vector<vector<int>>& matrix) {
+        if (matrix.empty()) return res;
+        int m = matrix.size(), n = matrix[0].size();
+        visited.resize(m, vector<int>(n, 0));
+        for (int i = 0; i < m; i++) {
+            dfs(matrix, i, 0, INT_MIN, 1);  //从左边界太平洋出发
+            dfs(matrix, i, n - 1, INT_MIN, 2);  //从右边界大西洋出发
+        }
+        for (int i = 0; i < n; i++) {
+            dfs(matrix, 0, i, INT_MIN, 1);  //从上边界太平洋出发
+            dfs(matrix, m - 1, i, INT_MIN, 2);  //从下边界大西洋出发
+        }
+        return res;
+    }
+};
+
 int main() {
     vector<vector<int>> matrix;
     int row, column;
