@@ -65,7 +65,7 @@ public:
 
     int pacific(int i, int j, vector<vector<int>>& pac, vector<vector<int>>& matrix) {
         if (pac[i][j] == 2 || !pac[i][j]) return pac[i][j]; //已经计算过结果
-        if (pac[i][j] == 1) return re_check(i, j, pac, matrix); //复检
+        if (pac[i][j] == 1) return re_check(i, j, pac, matrix) = pac[i][j]; //复检
         if (i == 0 || j == 0) return pac[i][j] = 2; //就在边缘, 直接流到太平洋
         pac[i][j] = 0;  //开始计算结果
         int top = 0, left = 0, down = 0, right = 0;
@@ -79,7 +79,7 @@ public:
 
     int atlantic(int i, int j, vector<vector<int>>& atlan, vector<vector<int>>& matrix) {
         if (atlan[i][j] == 2 || !atlan[i][j]) return atlan[i][j];
-        if (atlan[i][j] == 1) return re_check(i, j, atlan, matrix);
+        if (atlan[i][j] == 1) return re_check(i, j, atlan, matrix) = atlan[i][j];
         if (i == row-1 || j == column-1) return atlan[i][j] = 2;
         atlan[i][j] = 0;
         int top = 0, left = 0, down = 0, right = 0;
