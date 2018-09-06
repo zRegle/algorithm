@@ -38,7 +38,7 @@ class Solution {
             res.add(new LinkList<Integer>());
         }
         List<Integer> list = res.get(level);
-        if ((i>>1)&1 == 0) {    //等价于i%2==0
+        if (!(i&1)) {    //等价于i%2==0
             list.add(cur.val);  //加到链表尾部
         } else {
          list.add(0, cur.val); //加到链表头部
