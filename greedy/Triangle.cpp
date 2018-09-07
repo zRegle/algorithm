@@ -46,3 +46,58 @@ class Solution {
         return minSum;
     }
 };
+
+/**
+ * 改进版: 求路径
+ */
+ class Solution2 {
+     vector<int> minimumTotal(vector<vector<int>>& triangle) {
+        int row = triangle.size();
+        if (!row) {
+            vector<int> v;
+            return v;
+        }
+        auto first = triangle[0];
+        if (!first.size()) {
+            vector<int> v;
+            return v;
+        }
+        //上一行的最短路径, 这一行的最短路径
+        vector<vector<int>> prev_path, cur_path;
+        prev_path.emplace_back(first);
+        for (int i = 0; i < row; i++) {
+            auto prev_value = triangle[i-1];    //上一行的原始数值
+            auto cur_value = triangle[i];   //当前行的数值
+            int cur_size = cur_value.size();
+            int prev_size = prev_value.size();
+            for (int j = 0; j < cur_size; j++) {
+                int prev_left = j-1 >= 0 ? j-1 : j; //获取下标
+                int prev_right = j < prev_size ? j : j-1;   //获取下标   
+                vector<int> new_path;   //新的路径
+                //比较, 然后拷贝一份
+                if (prev_value[prev_left] < prev_value[prev_right]) {
+                    new_path.swap(prev_path[prev_left]);
+                } else {
+                    new_path.swap(prev_path[prev_right]);
+                }
+                //新路径加入当前的格子的数值
+                new_path.push_back(cur_value[j]);
+                //添加新路径
+                cur_path.push_back(new_path);
+            }
+            prev_path.clear(); prev_path.swap(cur_path);
+            cur_path.resize(cur_size+1);
+        }
+        //各路径求和, 返回最小值
+        int minSum = INT_MAX, minIndex = -1;
+        for (int i = 0; i < prev_path.size(); i++) {
+            int sum = 0;
+            for (auto num : prev_path[j]) sum += num;
+            if (sum < minSum) {
+                minSum = sum;
+                minIndex = i;
+            }
+        }
+        return prev_path[minIndex];
+     }
+ }
