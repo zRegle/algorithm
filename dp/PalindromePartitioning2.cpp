@@ -91,15 +91,15 @@ public:
                     isPali[i][j] = true;
                     cut[j+1] = min(cut[j+1], cut[i]+1);
                     /* 例如:
-                     * abklmlklmlks
+                     * abklmlklmlk
                      *       ^   ^
                      *       i   j
-                     * 那么我们可以尝试在前i个字符的基础上, 在j的前面再分割一下就合法了                     
+                     * 那么我们可以尝试在前i个字符的基础上, 在i的前面再分割一下就合法了                     
                      * 至于为什么要用min而不是每次都是cut[i]+1, 是因为:
-                     * ab|klmlklmlks
+                     * ab|klmlklmlk
                      *        ^   ^ ===> cut[i] = 1
                      *        i   j
-                     * a|b|klmlklmlks
+                     * a|b|klmlklmlk
                      *     ^       ^ ===> cut[i] = 2, 如果直接赋值成cut[i]+1, 就变成了要分割3次了
                      *     i       j
                      */
