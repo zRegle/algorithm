@@ -18,7 +18,7 @@ using namespace std;
 struct ListNode {
     int val;
     ListNode* next;
-    ListNode(int v, ListNode* n):val(v),next(n) {}
+    ListNode(int v):val(v),next(NULL) {}
 };
 
 /*
@@ -36,8 +36,8 @@ class Solution {
             if (node)
                 q.push(node);
         }
-        auto dummy = new ListNode(0, nullptr);
-        auto tail = dummy->next;
+        auto dummy = new ListNode(0);
+        auto tail = dummy;
         while (!q.empty()) {
             tail->next = q.top(); q.pop();
             tail = tail->next;
