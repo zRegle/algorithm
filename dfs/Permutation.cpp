@@ -42,5 +42,21 @@ public:
             }
         }
     }
+
+    void backtrack(vector<int>& nums, vector<int>& tmp) {
+        if (tmp.size() == nums.size()) {
+            for (int a : tmp)
+                cout<<a<<" ";
+            cout<<endl;
+        } else {
+            for (int i = 0; i < nums.size(); i++) {
+                if (find(tmp.begin(), tmp.end(), nums[i]) == tmp.end()) {
+                    tmp.push_back(nums[i]);
+                    backtrack(nums, tmp);   //dfs
+                    tmp.erase(tmp.end()-1); //这一层不放这个数字, 把这个数字删掉
+                }
+            }
+        }
+    }
 };
 
