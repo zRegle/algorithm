@@ -22,11 +22,9 @@ public:
         vector<vector<int>> res;
         res.emplace_back(intervals[0]);
         for (int i = 1; i < size; i++) {
-            auto cur = res.back();
+            vector<int>& cur = res.back();
             if (cur[1] >= intervals[i][0]) {
-                res.pop_back();
                 cur[1] = max(cur[1], intervals[i][1]);
-                res.emplace_back(cur);
             } else {
                 res.emplace_back(intervals[i]);
             }
