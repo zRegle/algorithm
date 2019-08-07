@@ -105,18 +105,18 @@ private:
 class Solution3 {
 public:
     string getPermutation(int n, int k) {
-        vector<char> nums(n);
+        vector<char> nums(n);   //数字数组
         iota(nums.begin(), nums.end(), '1');
-        vector<int> factorial(n+1);
+        vector<int> factorial(n+1); //用来存阶乘结果的数组
         factorial[0] = 1;
         for (int i = 1; i <= n; i++) 
             factorial[i] = factorial[i-1] * i;
         k--;
         string s;
         for (int i = 1; i <= n; i++) {
-            int idx = k / factorial[n-i];
+            int idx = k / factorial[n-i];   //确定当前要填的数字
             s += nums[idx];
-            nums.erase(nums.begin() + idx);
+            nums.erase(nums.begin() + idx); //擦去已经填进结果的数字
             k -= idx * factorial[n-i];
         }
         return s;
