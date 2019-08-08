@@ -40,7 +40,7 @@ public:
                     //1.等同于abcd 变到 ghij
                     //2.用'k'替换word1接下来的那个字符
                     int replace = dp[i-1][j-1];
-                    dp[i][j] = min(insert, min(_delete, replace));
+                    dp[i][j] = min(insert, min(_delete, replace)) + 1;
                 }
             }
         }
