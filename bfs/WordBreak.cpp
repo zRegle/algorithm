@@ -20,7 +20,7 @@ using namespace std;
  * 例如: s = "leetcode", wordDict = ["leet", "code"]
  * 那么我们有路径0->4->8
  */
-class Solution2 {
+class Solution {
 public:
     bool wordBreak(string& s, vector<string>& wordDict) {
         //初始化queue和visit
@@ -73,7 +73,7 @@ int main() {
              "abacd","cba","cdb","dbac","aada","cdcda",
              "cdc","dbc","dbcb","bdb","ddbdd","cadaa",
              "ddbc","babb"});
-    Solution1 s;
+    Solution s;
     cout<<s.wordBreak(str, wordDict)<<endl;
     return 0;
 }

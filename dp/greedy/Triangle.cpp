@@ -23,7 +23,7 @@ using namespace std;
  */ 
 
 class Solution {
-    int minimumTotal(vector<vector>>& triangle) {
+    int minimumTotal(vector<vector<int>>& triangle) {
         int row = triangle.size();
         if (!row) return 0;
         auto first = triangle[0];
@@ -57,7 +57,7 @@ public:
 		int N = triangle.size();	//行数
 		for (int level = N-2; level >= 0; level--)	//从倒数第二行开始, 自底向上
 			for (int index = 0; index <= level; index++)	//第几层就有多少个元素
-				minSum = min(minSum[i], minSum[i+1]) + triangle[level][index];
+				minSum[index] = min(minSum[index], minSum[index+1]) + triangle[level][index];
 		return minSum[0];	
 	}
 };

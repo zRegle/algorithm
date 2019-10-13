@@ -72,7 +72,7 @@ class Soultion {
 
 	void bfs(queue<pair<int, int>>& q, vector<vector<int>>& matrix, vector<vector<bool>>& visited) {
 		while (!q.empty()) {
-			auto coordinate = q.front(); q.poll();
+			auto coordinate = q.front(); q.pop();
 			for (auto dir : direction) {
 				int x = coordinate.first + dir.first;
 				int y = coordinate.second + dir.second;

@@ -2,6 +2,7 @@
 #include <queue>
 #include <vector>
 #include <unordered_map>
+#include <climits>
 using namespace std;
 
 /** 
@@ -87,7 +88,7 @@ int main() {
     string a[] = {"hot","dot","dog","lot","log","cog"};
     vector<string> v(a, a+7);
     Solution ss;
-    auto res = ss.ladderLength(s, t, v);
+    auto res = ss.findLadders(s, t, v);
     for (vector<string>& path :res) {
         for (string& str : path)
             cout<<str<<" ";

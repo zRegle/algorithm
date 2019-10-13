@@ -15,6 +15,7 @@
 
 #include <vector>
 #include <numeric>
+#include <string>
 using namespace std;
 
 //朴素的暴力解法, 算出前K个排列, 返回第K个
