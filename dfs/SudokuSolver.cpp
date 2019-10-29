@@ -37,14 +37,11 @@ public:
         if (board[i][j] != '.') return solver(board, i, j+1);   //这列已经被填了, 递归下一列
         int mIdx = (i/3)*3 + j/3, k = 1;
     Test:
-        bool hasAns = false;    //判断当前格子是否有数字可以填进去
         for (; k <= 9; k++) {
-            if (!CHECK(k, row[i]) && !CHECK(k,col[j]) && !CHECK(k,matrix[mIdx])) {
-                hasAns = true;
+            if (!CHECK(k, row[i]) && !CHECK(k,col[j]) && !CHECK(k,matrix[mIdx])) 
                 break;
-            }
         }
-        if (!hasAns) return false;  //没数字可以填进去, 返回false
+        if (k > 9) return false;  //没数字可以填进去, 返回false
         //设置位图
         SET(k,row[i]);
         SET(k,col[j]);
