@@ -1,7 +1,3 @@
-//
-// Created by Administrator on 2018/8/7.
-//
-
 #include <iostream>
 using namespace std;
 
@@ -11,11 +7,8 @@ int dp(int* weight, int* value, bool* used, int item_num, int bag_size) {
         dp[i] = new int[bag_size + 1]();
     }
     for (int i = 1; i <= item_num; ++i) {
-        for (int j = 1; j <= bag_size; ++j) {
-            if (j >= weight[i])
-                dp[i][j] = max(dp[i - 1][j - weight[i]] + value[i], dp[i - 1][j]);
-            else
-                dp[i][j] = dp[i - 1][j];
+        for (int j = weight[i]; j <= bag_size; ++j) {
+            dp[i][j] = max(dp[i - 1][j - weight[i]] + value[i], dp[i - 1][j]);
             cout<<dp[i][j]<<" ";
         }
         cout<<endl;
@@ -50,11 +43,10 @@ int dp2(int* w, int* v, bool* used, int n, int c) {
      * 所以要倒着来
      */
     for (int i = 1; i <= n; ++i) {
-        for (int j = c; j >= 1; --j) {
-            if (j >= w[i])
-                dp[j] = max(dp[j], dp[j-w[i]]+v[i]);
-                //等式右边的dp[j]相当于dp[i-1][j]
-                //dp[j-w[i]]+v[i]相当于dp[i-1][j-w[i]]+v[i]
+        for (int j = c; j >= w[i]; --j) {
+            dp[j] = max(dp[j], dp[j-w[i]]+v[i]);
+            //等式右边的dp[j]相当于dp[i-1][j]
+            //dp[j-w[i]]+v[i]相当于dp[i-1][j-w[i]]+v[i]    
         }
     }
     for (int k = n; k >= 1; ++k) {

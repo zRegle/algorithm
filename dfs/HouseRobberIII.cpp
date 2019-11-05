@@ -74,14 +74,16 @@ public:
 
     int robSub(TreeNode* root, map<TreeNode*, int>& m) {
         if (!root) return 0;
-        if (m.find(root) != m.end()) return m[root];
+        map<TreeNode*, int>::iterator it;
+        if ((it = m.find(root)) != m.end())
+            return it->second;
         int val = 0;
         if (root->left)
             val += robSub(root->left->left, m) + robSub(root->left->right, m);  //当前的偷了
         if (root->right)
             val += robSub(root->right->left, m) + robSub(root->right->right, m);    //当前的偷了
         val = max(val + root->val, robSub(root->left, m) + robSub(root->right, m));  //后面那个是当前的选择不偷
-        m.insert(pair<TreeNode*, int>(root, val));
+        m.insert({root, val});
         return val;
     }
 };

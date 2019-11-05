@@ -37,6 +37,27 @@ public:
     }
 };
 
+//递归版本
+class Solution2 {
+public:
+    int numTrees(int n) {
+        int* nums = new int[n+1]();
+        nums[0] = nums[1] = 1;
+        int ans = numTrees(n, nums);
+        delete[](nums);
+        return ans;
+    }
+private:
+    int numTrees(int n, int* nums) {
+        if (nums[n]) return nums[n];
+        int cnt = 0;
+        for (int i = 1; i <= n; i++)
+            cnt += numTrees(i-1) * numTrees(n-i);
+        nums[n] = cnt;
+        return cnt;
+    }
+}
+
 int main() {
     Solution solution;
     cout<<solution.numTrees(3)<<endl;
