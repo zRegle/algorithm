@@ -1,17 +1,25 @@
-#include <iostream>
 #include <vector>
-#include <climits>
-#include <string>
 using namespace std;
 
 /*
  * leetcode 85: maximal rectangle
  * 给定一个01矩阵, 求只包含1的最大面积矩形
+ * 示例:
+ *  输入:
+ *  [
+ *   ["1","0","1","0","0"],
+ *   ["1","0","1","1","1"],
+ *   ["1","1","1","1","1"],
+ *   ["1","0","0","1","0"]
+ *  ]
+ * 输出: 6
  * 思路:
- * height代表这一列的最大高度
- * left, right数组分别代表这一列在高度不为0时, 向左右两边扩展能够扩展到最远的坐标
- * 给定一个一行中的某一列, 面积有:
- * right[j] - left[j] * height[j]
+ * (1)可以将每一行看成一个直方图的底, 这样就可以用leetcode 84的方法来解答
+ * (2)这里另外一种方法是用动态规划来做:
+ *     height代表这一列的最大高度
+ *     left, right数组分别代表这一列在高度不为0时, 向左右两边扩展能够扩展到最远的坐标
+ *     给定一个一行中的某一列, 面积有:
+ *     right[j] - left[j] * height[j]
  */
 
 class Solution {
@@ -61,8 +69,3 @@ public:
         return max_area;
     }
 };
-
-int main() {
-    Solution solution;
-    return 0;
-}
