@@ -24,7 +24,7 @@ using namespace std;
  * 那么中位数 = (max(left_part) + min(right_part))/2.
  * 要满足这两个要求, 我们只需要满足
  * 1) i+j == (m+n)/2
- * 2) A[i-1] <= B[j] && B[j-1] <= A[i]
+ * 2) A[i-1] <= B[j] 且 B[j-1] <= A[i]
  */
 
 class Solution {

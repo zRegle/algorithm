@@ -1,4 +1,4 @@
-#include <iostream>
+#include <stack>
 using namespace std;
 
 /*
@@ -28,11 +28,7 @@ using namespace std;
  *   11   20
  *  / \
  * 5  12
- * 节点6与节点10不满足关系
- *
- * 思路:
- * 在每一次递归的时候, 传入当前递归的取值范围
- * 实际上就是把当前节点和父节点以及祖父节点的关系传入进去了
+ * 节点5与节点10不满足关系
  */
 
 struct TreeNode {
@@ -43,6 +39,9 @@ struct TreeNode {
 };
 
 
+//思路:
+//在每一次递归的时候, 传入当前递归的取值范围
+//实际上就是把当前节点和父节点以及祖父节点的关系传入进去了
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
@@ -54,5 +53,27 @@ public:
         if ((min && root->val <= min->val) || (max && root->val >= max->val))
             return false;
         return isValidBST(root->left, min, root) && isValidBST(root->right, root, max);
+    }
+};
+
+//BST的中序遍历是严格递增的序列, 中序遍历一下就知道
+class Solution2 {
+public:
+    bool isValidBST(TreeNode* root) {
+        stack<TreeNode*> s;
+        TreeNode* cur = root, *prev = nullptr;
+        while (!s.empty() || cur) {
+            while (cur) {
+                s.push(cur);
+                cur = cur->left;
+            }
+            cur = s.top();
+            if (prev && prev->val >= cur->val)
+                return false;
+            prev = cur;
+            s.pop();
+            cur = cur->right;
+        }
+        return true;
     }
 };

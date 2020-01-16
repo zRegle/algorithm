@@ -28,9 +28,9 @@ public:
                 s.push(i++);
             else {
                 //h[i] < h[s.top()], s.top()右边第一个低过它的就是i
-                //因为之前是按递增高度入栈的, 那么s.top()左边第一个低过它的就是s.top()出栈后的下一个栈顶元素
+                //因为之前是按递增高度入栈的, 那么s.top()左边第一个比它低的就是s.top()出栈后的下一个栈顶元素
                 int idx = s.top(); s.pop();
-                //如果栈空了, 说明从0出发到i-1都是递增高度, h[0] > h[i], 所以此时宽度为i
+                //如果栈空了, 说明从0出发到i-1都是递增高度, h[0] < h[i], 所以此时宽度为i
                 area = max(area, h[idx] * (s.empty() ? i : i-s.top()-1));
             }
         }
@@ -67,7 +67,7 @@ private:
         }
     }
 
-    int getMinHeightIdx(vector<int>& h, int start, int end) {
+    inline int getMinHeightIdx(vector<int>& h, int start, int end) {
         int minHeightIdx = start, minHeight = INT_MAX;
         for (int i = start+1; i <= end; i++) {
             if (h[i] < minHeight) {
@@ -78,11 +78,3 @@ private:
         return minHeightIdx;
     }
 };
-
-int main() {
-    int a[] = {2,1,5,6,2,3};
-    vector<int> h(a, a+6);
-    Solution s;
-    cout<<s.largestRectangleArea(h);
-    return 0;
-}
