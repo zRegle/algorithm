@@ -39,21 +39,17 @@ public:
     }
 
     void pathSum(TreeNode* root, vector<int>& v, int sum) {
-        //已经到叶子节点了, 但是加起来不等于sum
-        if (!root->left && !root->right && sum != root->val) return;
+        if (!root) return;
         v.push_back(root->val);
         //到叶子节点了, 加起来等于sum
         if (!root->left && !root->right && sum == root->val) {
             paths.push_back(v);
-            return;
+        } else {
+            //递归调用左右子树
+            pathSum(root->left, v, sum-root->val);
+            pathSum(root->right, v, sum-root->val);
         }
-        if (root->left) {
-            vector<int> left(v);    //拷贝一份新的路径
-            pathSum(root->left, left, sum-root->val);
-        }
-        if (root->right) {
-            vector<int> right(v);   //拷贝一份新的路径
-            pathSum(root->right, right, sum-root->val);
-        }
+        //恢复辅助数组
+        v.pop_back();
     }
 };
