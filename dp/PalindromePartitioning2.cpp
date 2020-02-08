@@ -80,16 +80,25 @@ private:
 class Solution2 {
 public:
     int minCut(string& s) {
-        const int len = s.length();
-        if (len <= 1) return 0;
-        //初始化工作
-        bool isPali[len][len]; fill_n(&isPali[0][0], len*len, false);
-        int cut[len+1]; for (int i = 0; i <= len; i++) cut[i] = i-1;
-        for (int j = 1; j < len; j++) {
-            for (int i = j; i >= 0; i--) {
-                if (s[i] == s[j] && (i+1 > j-1 || isPali[i+1][j-1])) {
-                    isPali[i][j] = true;
-                    cut[j+1] = min(cut[j+1], cut[i]+1);
+        int len = s.length();
+        if (!len) return 0;
+        vector<int> dp(len+1);
+        for (int i = 0; i <= len; i++)
+            dp[i] = i-1;
+        //让dp[0] = -1是因为:
+        //例如s = "aa", 那么当i=1, j = 2时
+        //dp[2] = min(dp[2], dp[1-1] + 1), 如果dp[0]≠-1, 那么dp[2]结果就错了
+        vector<vector<bool>> isPalindromic(len+1, vector<bool>(len+1, false));
+        for (int j = 1; j <= len; j++) {
+            for (int i = j; i >= 1; i--) {
+                if (i == j)
+                    isPalindromic[i][j] = true;
+                else if (j == i + 1)
+                    isPalindromic[i][j] = s[i-1] == s[j-1];
+                else
+                    isPalindromic[i][j] = s[i-1] == s[j-1] && isPalindromic[i+1][j-1];
+                if (isPalindromic[i][j])
+                    dp[j] = min(dp[j], dp[i-1]+1);
                     /* 例如:
                      * abklmlklmlk
                      *       ^   ^
@@ -103,10 +112,9 @@ public:
                      *     ^       ^ ===> cut[i] = 2, 如果直接赋值成cut[i]+1, 就变成了要分割3次了
                      *     i       j
                      */
-                }
             }
         }
-        return cut[len];
+        return dp[len];
     }
 };
 
