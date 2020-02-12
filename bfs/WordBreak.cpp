@@ -20,44 +20,35 @@ using namespace std;
  * 例如: s = "leetcode", wordDict = ["leet", "code"]
  * 那么我们有路径0->4->8
  */
+//还有dfs和dp的方法, 参考对应的文件夹
 class Solution {
 public:
     bool wordBreak(string& s, vector<string>& wordDict) {
-        //初始化queue和visit
-        queue<int> bfs; bfs.push(0);
-        int len = s.length();
-        bool* visit = new bool[len+1]; fill_n(visit, len, false);
-        int mLen = max_len(wordDict);
-        while (!bfs.empty()) {
-            int start = bfs.front(); bfs.pop();
-            for (int i = 1; i <= mLen; i++) {
-                //从起点出发, 尝试构造字典中的单词
-                string w = s.substr((unsigned int)start, (unsigned int)i);
-                if (find(wordDict.begin(), wordDict.end(), w) != wordDict.end()) {
-                    if (start+i == s.length())  //到达终点
+        if (s.empty()) return true;
+        if (wordDict.empty()) return false;
+        auto cmp = [](const string& s1, const string& s2) ->
+                bool {return s1.length() < s2.length();};
+        auto it = max_element(wordDict.begin(), wordDict.end(), cmp);
+        int maxLen = it->length(); //获取字典中最长单词的长度, 剪枝
+        queue<int> q;
+        q.push(0);
+        vector<bool> visited(s.length(), false); //是否已经到达过某个位置
+        while (!q.empty()) {
+            //当前深度要从哪里开始出发截取字符串
+            int idx = q.front(); q.pop();
+            for (int i = 1; i <= maxLen && idx + i <= s.length(); i++) {
+                string word = s.substr(idx, i);
+                if (find(wordDict.begin(), wordDict.end(), word) != wordDict.end()) {
+                    if (idx + i == s.length())
                         return true;
-                    else {
-                        //判断新起点是否遍历过
-                        if (!visit[start+i]) {
-                            visit[start+i] = true;
-                            bfs.push(start+i);
-                        }
+                    if (!visited[idx + i]) {
+                        visited[idx + i] = true;
+                        q.push(idx + i);
                     }
                 }
             }
         }
-        delete[](visit);
         return false;
-    }
-
-private:
-    //统计字典里单词的最长长度
-    int max_len(vector<string>& wordDict) {
-        int len = -1;
-        for (string& w : wordDict) {
-            len = max(len, (int)w.length());
-        }
-        return len;
     }
 };
 

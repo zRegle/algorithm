@@ -80,21 +80,25 @@ public:
     //需要判断是从左子树还是右子树返回到根节点
     void postorderTraversal(TreeNode* root) {
         stack<TreeNode*> s;
-        TreeNode* cur = root, *r = NULL;
+        TreeNode* cur = root, *recent = nullptr;
         while (!s.empty() || cur) {
-            if (cur) {
+            if (cur) { //当前子树还没遍历
                 s.push(cur);
                 cur = cur->left;
             } else {
                 cur = s.top();
-                //右子树不为空并且右子树没访问过
-                if (cur->right && cur->right != r) {
-                    cur = cur->right;   //遍历右子树
+                if (cur->right && cur->right != recent) {
+                    //右子树不为空并且右子树没访问过, 表明是从左子树返回的
+                    //遍历右子树
+                    cur = cur->right;
                 } else {
+                    //这里有两个情况:
+                    //1.没有右子树, 相当于右子树遍历完毕
+                    //2.从右子树返回, 表明右子树遍历完毕
                     s.pop();
-                    cout<<cur->val;
-                    r = cur;    //记录最近访问过的节点
-                    cur = NULL;
+                    cout<<cur->val<<" "; //输出根节点的值
+                    recent = cur;    //记录最近访问过的节点
+                    cur = nullptr; //cur置空, 表示当前子树已经遍历完毕
                 }
             }
         }
