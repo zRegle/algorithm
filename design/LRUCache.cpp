@@ -90,6 +90,8 @@ private:
             prev->next = next;
             next->prev = prev;
         }
+        node->next = nullptr;
+        node->prev = nullptr;
     }
 
     void add(Node* node) {
