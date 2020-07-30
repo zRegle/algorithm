@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
 
 /*
@@ -42,5 +43,28 @@ public:
         for (; i < right.size(); ++i) v.push_back(right[i]);    //优先加右边的
         //左子树得出的序列比右子树多, 表明左子树的高度大于右子树, 加上多出的高度对应的那部分
         while (i < left.size()) v.push_back(left[i++]); 
+    }
+};
+
+/* BFS做法 */
+class Solution1 {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        if (!root) return ans;
+        queue<TreeNode*> q;
+        q.push(root);
+        TreeNode* n;
+        while (!q.empty()) {
+            int cnt = q.size();
+            while (cnt--) {
+                n = q.front();
+                q.pop();
+                if (n->left) q.push(n->left);
+                if (n->right) q.push(n->right);
+            }
+            ans.push_back(n->val);
+        }
+        return ans;
     }
 };
