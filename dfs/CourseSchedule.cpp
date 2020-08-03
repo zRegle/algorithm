@@ -94,3 +94,36 @@ class Solution {
         return onPath[vertex] = false;
     }
 };
+
+/* 继续改良做法: 只用一个集合 */
+class Solution1 {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        /* visited[i] = 0 -> 没被遍历过
+         * visited[i] = 1 -> 以i为起始节点遍历过
+         * visited[i] = 2 -> 以其它节点为其实节点遍历过
+         */
+        vector<int> visited(numCourses, 0);
+        /* 转化为邻接矩阵, MLE的时候可以去掉这一步, 用时间换空间 */
+        vector<vector<int>> graph(numCourses, vector<int>());
+        for (vector<int>& edge : prerequisites)
+            graph[edge[0]].push_back(edge[1]);
+        for (int i = 0; i < numCourses; i++)
+            if (!dfs(i, visited, graph))
+                return false;
+        return true;
+    }
+
+private:
+    /* 返回true代表从cur出发无环, false则为有环 */
+    bool dfs(int cur, vector<int>& visited, vector<vector<int>>& graph) {
+        if (visited[cur] == 1) return false; /* 从cur出发返回到cur, 有环 */
+        if (visited[cur] == 2) return true; /* 已经有其他节点遍历过cur了, 直接返回 */
+        visited[cur] = 1;
+        for (int neighbor : graph[cur])
+            if (!dfs(neighbor, visited, graph))
+                return false;
+        visited[cur] = 2; /* 返回上层递归, 设置为2 */
+        return true;
+    }
+};
