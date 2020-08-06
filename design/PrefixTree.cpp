@@ -9,21 +9,16 @@ using namespace std;
 
 /* 我的实现, 没看到可以假设全是小写字母输入, 所以比较繁琐 */
 struct TrieNode {
-    /* 是否可以是终止节点
-     * -1 -> 初始值
-     * 0 -> false
-     * 1 -> true
-     */
-    int end;
+    bool end; /* 是否可以为终止节点 */
     unordered_map<char, TrieNode*> children;
-    TrieNode(int val) : end(val) {}
+    TrieNode(bool val) : end(val) {}
 };
 
 class Trie {
 public:
     /** Initialize your data structure here. */
     Trie() {
-        root = new TrieNode(-1);
+        root = new TrieNode(false);
     }
 
     /** Inserts a word into the trie. */
@@ -38,17 +33,12 @@ public:
         /* 处理dfs返回结果的第二种, 将剩下的字符加到树中 */
         TrieNode* cur, *prev = ptr;
         for (int i = idx; i < word.length(); i++) {
-            cur = new TrieNode(-1);
+            cur = new TrieNode(false);
             prev->children[word[i]] = cur;
-            if (prev->end != 1)
-                /* 有可能这个节点可以是终止节点
-                 * 需要先判断一下再设置end的值
-                 */
-                prev->end = 0;
             prev = cur;
         }
         /* 无论循环是否执行, 最后一个节点一定可以是终止节点 */
-        prev->end = 1;
+        prev->end = true;
     }
 
     /** Returns if the word is in the trie. */
@@ -56,7 +46,7 @@ public:
         int idx = 0;
         TrieNode* ptr = dfs(root, word, idx);
         /* 已经搜索完整个词并且最后停在了叶子节点, 代表搜索成功 */
-        return idx == word.length() && ptr->end == 1;
+        return idx == word.length() && ptr->end;
     }
 
     /** Returns if there is any word in the trie that starts with the given prefix. */
