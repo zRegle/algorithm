@@ -8,11 +8,65 @@
  *  输入: "cbbd"
  *  输出: "bb"
  */
-#include <iostream>
+#include <string>
 #include <vector>
 using namespace std;
 
-//还有个马拉车算法
+/* Manacher算法(马拉车)
+ * 具体解释参考链接: https://www.cxyxiaowu.com/2665.html
+ */
+class Solution {
+public:
+    string longestPalindrome(string& s) {
+        int len = s.length();
+        if (len < 2) return s;
+
+        string str = preprocess(s);
+        len = 2 * len + 1;
+        /* p[i]表示以i为中心的回文串半径 */
+        vector<int> p(len, 0);
+        /* 当前能够回文扩散到最右下标 以及 其对应的中心下标 */
+        int center = 0, maxRight = 0;
+        int maxLen = 1, start = 0; /* 记录最长回文子串的信息 */
+
+        for (int i = 0; i < len; i++) {
+            if (i < maxRight) {
+                int mirror = 2 * center - i;
+                /* 这一步结合链接理解 */
+                p[i] = min(p[mirror], maxRight - i);
+            }
+            /* 尝试继续扩散 */
+            int left = i - (p[i] + 1), right = i + (p[i] + 1);
+            while (left >= 0 && right < len && str[left] == str[right]) {
+                p[i]++;
+                left--;
+                right++;
+            }
+            /* 更新对应信息 */
+            if (i + p[i] > maxRight) {
+                center = i;
+                maxRight = i + p[i];
+            }
+            if (p[i] > maxLen) {
+                /* 记录对应原始字符串的起始位置和长度 */
+                maxLen = p[i];
+                start = (i - maxLen) / 2;
+            }
+        }
+        return s.substr(start, maxLen);
+    }
+
+private:
+    /* 预处理, 填充分隔符, 使得处理后的字符串长度总为奇数 */
+    string preprocess(string& str) {
+        string res = "#";
+        for (char c : str) {
+            res += c;
+            res += '#';
+        }
+        return res;
+    }
+};
 
 //中心扩展法, 选定一个或一对字符, 向左右两边拓展
 class Solution1 {
