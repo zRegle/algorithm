@@ -29,10 +29,10 @@ public:
 class QuickSortBase {
 public:
     int findKthLargest(vector<int>& nums, int k) {
-        return quickSelect(nums, 0, nums.size()-1, k);
+        return quickSelect(nums, 0, nums.size()-1, nums.size()-k);
     }
 private:
-    int quickSelect(vector<int>& nums, int left, int right, int k) {
+    int quickSelect(vector<int>& nums, int left, int right, int idx) {
         if (left < right) {
             int i = left, j = right, tmp = nums[left];
             while (i < j) {
@@ -47,20 +47,15 @@ private:
                     j--;
                 }
             }
-            /* pivot是倒数第count个 */
-            int count = right - i + 1;
-            if (count == k)
+            if (i == idx)
                 return tmp;
             nums[i] = tmp;
-            if (count > k)
-                /* count比k大, 选择的pivot在k的左边, 递归右边继续找 */
-                return quickSelect(nums, i+1, right, k);
+            if (i < idx)
+                /* idx在基准值的右边, 递归右边继续找 */
+                return quickSelect(nums, i+1, right, idx);
             else
-                /* count比k小, 选择的pivot在k的右边, 递归左边继续找
-                 * 注意此时我们已经找到了数组中最大的count个数
-                 * 现在要找第k大的数, 所以k要减去count用于下次递归
-                 */
-                return quickSelect(nums, left, i-1, k-count);
+                /* idx在基准值的左边, 递归左边继续找 */
+                return quickSelect(nums, left, i-1, idx);
         }
         return nums[left];
     }
