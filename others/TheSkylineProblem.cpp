@@ -17,13 +17,13 @@ class Solution {
 public:
     vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
         vector<pair<int,int>> h;
-        /* multiset允许有重复元素存在, 并且会对元素排序
+        /* multiset允许有重复元素存在, 会对元素排序
          * 并且插入查找删除都可以在logn的时间内完成
          */
         multiset<int> m;
         vector<vector<int>> res;
 
-        //将每一个建筑分成“两个部分”，例如:[2,9,10]可以转换成[2，-10][9,10]，我们用负值来表示左边界
+        //将每一个建筑分成两个部分，例如:[2,9,10]可以转换成[2，-10][9,10]，我们用负值来表示左边界
         for(auto& b : buildings) {
             h.emplace_back(make_pair(b[1], -b[2]));
             h.emplace_back(make_pair(b[1], b[2]));
