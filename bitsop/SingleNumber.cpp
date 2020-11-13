@@ -20,10 +20,9 @@ using namespace std;
 class Solution {
 public:
     int singleNumber(vector<int>& nums) {
-        int ans = nums[0];
-        for (int i = 1; i < nums.size(); i++) {
-            ans ^= nums[i];
-        }
+        int ans = 0;
+        for (int x : nums)
+            ans ^= x;
         return ans;
     }
 };
