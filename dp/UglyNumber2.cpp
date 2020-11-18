@@ -11,25 +11,9 @@
 #include <set>
 using namespace std;
 
-/* 丑数只能是丑数 x 丑数得到 */
+/* 优先级队列方法查看other文件夹 */
 
-/* 优先级队列, 每次取出队列头, 然后x2, x3, x5放回队列 */
-class Solution {
-public:
-    int nthUglyNumber(int n) {
-        set<unsigned long> s;
-        int prime[] = {2,3,5};
-        s.insert(1);
-        unsigned long cnt = 1, num;
-        while (num = *s.begin(), cnt < n) {
-            s.erase(s.begin());
-            for (int x : prime)
-                s.insert(x);
-            cnt++;
-        }
-        return (int)num;
-    }
-};
+/* 丑数只能是丑数 x 丑数得到 */
 
 /* 动态规划
  * 类似于合并排序链表, 有3条链表
@@ -39,7 +23,7 @@ public:
  * 每次比较三条链, 取最小的元素放到结果链中即可
  * 唯一要注意的是, 如果有多个最小值时, 都要把元素取出, 不然下一次循环就会出现重复元素
  */
-class Solution1 {
+class Solution {
 public:
     int nthUglyNumber(int n) {
         vector<int> dp(1690, 0);
