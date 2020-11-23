@@ -1,9 +1,4 @@
-#include <vector>
-#include <climits>
-using namespace std;
-
-/*
- * 279. Perfect Squares
+/* Leetcode 279. Perfect Squares
  * 给定一个数, 求出一系列平方数之和等于这个数的最少个数
  *
  * Input: n = 12
@@ -13,9 +8,14 @@ using namespace std;
  * Input: n = 13
  * Output: 2
  * Explanation: 13 = 4 + 9.
- *
- * 思路: 明显要用动态规划, dp[i]表示给定数字i, 平方数的最少个数
  */
+#include <vector>
+#include <climits>
+using namespace std;
+
+/* BFS方法参考BFS文件夹 */
+
+ /* 动态规划, dp[i]表示给定数字i, 平方数的最少个数 */
 class Solution {
     int numSquares(int n) {
         vector<int> dp(n+1, INT_MAX);
