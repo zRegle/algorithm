@@ -70,7 +70,7 @@ public:
  * 详细介绍在这https://codeforces.com/blog/entry/22276
  * 
  * BFS的正确性在于, 对于源点s以及任意两个节点u和v，如果dist(s, u) < dist(s, v)
- * (其中dist(x, y)表示从节点x到节点y的最短路长度)，那么节点 一定会比节点v先被取出队列
+ * (其中dist(x, y)表示从节点x到节点y的最短路长度)，那么节点u一定会比节点v先被取出队列
  * 
  * 在这里, 我们同样需要保证从队列中取出的节点, 它们与源点之间的距离是单调递增的.
  */
@@ -113,7 +113,7 @@ public:
 	}
 };
 
-/* 我的BFS方法(Speed: beat 93%, Memory: beat 47%)
+/* 我的BFS方法(Speed: beat 99.54%, Memory: beat 94.53%)
  * 设树的当前层高为cost, 树中每层的节点就是最少花费cost就能到达的格子
  */
 class Solution {
@@ -152,6 +152,7 @@ private:
 
 	/* 从i, j出发, 按照grid的方向, 遍历所有能够走到的格子
 	 * 即从i, j出发, 不用额外的花费就能走到的格子, 它们应该跟节点(i, j)位于同一层
+	 * 目的也是为了保证从队列中取出的节点, 它们与源点之间的距离是单调递增的.
 	 */
 	void traverse(int i, int j, vector<int>& visited, vector<vector<int>>& grid) {
 		while (true) {
