@@ -20,6 +20,8 @@
 #include <vector>
 using namespace std;
 
+/* bfs解法见bfs文件夹 */
+
 /* 从边界的'O'出发, dfs或者bfs遍历所有与边界相连的'O', 全部置为'#' 
  * 然后在遍历矩阵, 遇到'O'表明这个'O'不会与边界的'O'相连, 即被'X'围绕
  * 遇到'#'就复原为'O'

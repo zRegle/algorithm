@@ -101,6 +101,7 @@ class Solution2 {
 public:
     vector<pair<int, int>> res;
     vector<vector<int>> visited;
+    int direction[4][2] = {{1,0}, {0,1}, {-1,0}, {0,-1}};
 
     /**
      *
@@ -114,16 +115,18 @@ public:
         if (x < 0 || x >= matrix.size() || y < 0 || y >= matrix[0].size()
             || matrix[x][y] < pre || (visited[x][y] & preval) == preval)
             //(visit[x][y] & preval) == preval
-            //前一个格子和这个格子都可以流到太平洋或者大西洋, 或者都可以, 表明已经dfs过了
+            //前一个格子和这个格子都可以流到太平洋或者大西洋, 或者两个大洋都可以, 表明已经dfs过了
             return;
         //如果(visit[x][y] & preval) != preval
-        //证明前一个格子和后一个格子的状态不一致, 需要判断当前格子能否能否达到前一个格子可以到达的大洋
+        //证明前一个格子和后一个格子的状态不一致, 需要判断当前格子能否达到前一个格子可以到达的大洋
         //譬如: preval = 1, visit[x][y] = 2, 则当前格子符合最终条件, 加入结果集,
         //      preval = 1, visit[x][y] = 0, 当前格子可以流到太平洋, 继续判断是否可以流到大西洋
         visited[x][y] |= preval;
         if (visited[x][y] == 3) res.emplace_back(pair<int, int>(x, y));
-        dfs(matrix, x + 1, y, matrix[x][y], visited[x][y]); dfs(matrix, x - 1, y, matrix[x][y], visited[x][y]);
-        dfs(matrix, x, y + 1, matrix[x][y], visited[x][y]); dfs(matrix, x, y - 1, matrix[x][y], visited[x][y]);
+        for (auto& d : direction) {
+            int i = x + d[0], j = y + d[1];
+            dfs(matrix, i, j, matrix[x][y], visited[x][y]);
+        }
     }
 
     vector<pair<int, int>> pacificAtlantic(vector<vector<int>>& matrix) {
@@ -141,22 +144,3 @@ public:
         return res;
     }
 };
-
-int main() {
-    vector<vector<int>> matrix;
-    int row, column;
-    cin>>row>>column;
-    for (int i = 0; i < row; i++) {
-        vector<int> v(column, INT_MAX);
-        for (int j = 0; j < column; ++j) {
-            cin>>v[j];
-        }
-        matrix.push_back(v);
-    }
-    Solution s;
-    auto res = s.pacificAtlantic(matrix);
-    for (auto p : res) {
-        cout<<'['<<p.first<<','<<p.second<<']'<<" ";
-    }
-    return 0;
-}

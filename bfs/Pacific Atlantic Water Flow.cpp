@@ -30,7 +30,7 @@ class Soultion {
 			
 	vector<pair<int, int>> pacificAtlantic(vector<vector<int>>& matrix) {
 		vector<pair<int, int>> res;
-		row = matrix.size;
+		row = matrix.size();
 		if (!row) return res;
 		column = matrix[0].size();
 		if (!column) return res;
