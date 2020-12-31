@@ -25,8 +25,8 @@ using namespace std;
  */
 
 class Soultion {
-	vector<pair<int, int>> direction;	//方向数组
 	int row, column;
+	int direction[4][2] = {{1,0}, {-1,0}, {0,1}, {0,-1}};
 			
 	vector<pair<int, int>> pacificAtlantic(vector<vector<int>>& matrix) {
 		vector<pair<int, int>> res;
@@ -53,11 +53,6 @@ class Soultion {
 			atlantic[row-1][i] = true;
 		}
 
-		direction.emplace_back(pair<int, int>(1, 0));	//down
-		direction.emplace_back(pair<int, int>(-1, 0));	//top
-		direction.emplace_back(pair<int, int>(0, 1));	//right
-		direction.emplace_back(pair<int, int>(0, -1));	//left
-
 		bfs(pQueue, matrix, pacific);
 		bfs(aQueue, matrix, atlantic);
 
@@ -73,9 +68,9 @@ class Soultion {
 	void bfs(queue<pair<int, int>>& q, vector<vector<int>>& matrix, vector<vector<bool>>& visited) {
 		while (!q.empty()) {
 			auto coordinate = q.front(); q.pop();
-			for (auto dir : direction) {
-				int x = coordinate.first + dir.first;
-				int y = coordinate.second + dir.second;
+			for (auto& dir : direction) {
+				int x = coordinate.first + dir[0];
+				int y = coordinate.second + dir[1];
 				if (x < 0 || x >= row || y < 0 || y >= column 
 					|| visited[x][y] || matrix[x][y] < matrix[coordinate.first][coordinate.second]) 
 					continue;

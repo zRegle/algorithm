@@ -8,7 +8,6 @@
  */
 #include <vector>
 #include <queue>
-#include <unordered_set>
 using namespace std;
 
 /**
@@ -33,16 +32,21 @@ public:
             blue[e[0]].push_back(e[1]);
         }
         vector<int> ans(n, -1);
-        unordered_set<int> visited;
+        /**
+         * 一共有n个顶点, 每个顶点有两种状态:
+         * 从红边到达该顶点和从蓝边到达该顶点
+         * 因此一共有n * 2个元素
+         */
+        vector<int> vis(n << 1, 0);
         queue<int> q;
         int state = MAKE_STATE(0, 1);
         /**
          * 从节点0出发, 可以选择红色边或者蓝色边到下一个节点
          * 那么可以认为就是分别有两个dummy node通过红色边和蓝色边到达节点0
          */
-        q.push(state); visited.insert(state);
+        q.push(state); vis[state] = 1;
         state = MAKE_STATE(0, 0);
-        q.push(state); visited.insert(state);
+        q.push(state); vis[state] = 1;
         int cnt = 0;
         while (!q.empty()) {
             int size = q.size();
@@ -56,8 +60,8 @@ public:
                     //通过红色边到达当前节点的, 只能选择蓝色边到下一个节点
                     for (int neighbor : blue[node]) {
                         state = MAKE_STATE(neighbor, 1);
-                        if (visited.find(state) == visited.end()) {
-                            visited.insert(state);
+                        if (vis[state] == 0) {
+                            vis[state] = 1;
                             q.push(state);
                         }
                     }
@@ -65,8 +69,8 @@ public:
                     //通过蓝色边到达当前节点的, 只能选择红色边到下一个节点
                     for (int neighbor : red[node]) {
                         state = MAKE_STATE(neighbor, 0);
-                        if (visited.find(state) == visited.end()) {
-                            visited.insert(state);
+                        if (vis[state] == 0) {
+                            vis[state] = 1;
                             q.push(state);
                         }
                     }
