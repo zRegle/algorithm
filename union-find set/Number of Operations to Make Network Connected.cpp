@@ -27,11 +27,13 @@ public:
         rank.resize(n); 
         fill(rank.begin(), rank.end(), 1);
         /* 最初各个节点都是一个集合 */
-        component = n;
+        int component = n;
         /* 开始合并 */
         for (vector<int>& edge : connections) {
             int n1 = edge[0], n2 = edge[1];
-            merge(n1, n2);
+            if (merge(n1, n2))
+                /* 发生了合并, 连通分量减一 */
+                component--;
         }
 
         return component - 1;
@@ -39,7 +41,6 @@ public:
 private:
     vector<int> father;
     vector<int> rank;
-    int component;
 
     int find(int x) {
         if (x == father[x])
@@ -50,10 +51,10 @@ private:
         }
     }
 
-    void merge(int i, int j) {
+    bool merge(int i, int j) {
         int x = find(i), y = find(j);
         /* 两者的父节点一致, 是在同一个集合, 不需要合并 */
-        if (x == y) return;
+        if (x == y) return false;
         /* 两者的父节点不在同一个集合, 需要合并成新一个集合  */
         if (rank[x] <= rank[y]) {
             father[x] = y;
@@ -62,7 +63,6 @@ private:
         }
         if (rank[x] == rank[y])
             rank[y]++;
-        /* 合并后连通分量减一 */
-        component--;
+        return true;
     }
 };
