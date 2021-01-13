@@ -53,7 +53,7 @@ private:
         if (root == nullptr) return;
         if (v.size() <= level)
             v.push_back(deque<int>());
-        auto q = v[level];
+        auto& q = v[level]; //注意要用reference, 不然产生copy了
         //等价于level % 2 == 0
         if (!(level & 1))
             //偶数层加到队列尾, 先进先出, 顺序输出
