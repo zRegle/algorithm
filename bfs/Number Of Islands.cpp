@@ -48,14 +48,3 @@ int countIsland(vector<vector<int>>& matrix) {
     }
     return cnt;
 }
-
-int main() {
-    cin>>row>>col;
-    vector<vector<int>> matrix(row, vector<int>(col));
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++)
-            cin>>matrix[i][j];
-    }
-    cout<<countIsland(matrix);
-    return 0;
-}
