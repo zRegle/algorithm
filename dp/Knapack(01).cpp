@@ -1,6 +1,9 @@
 #include <iostream>
 using namespace std;
 
+/**
+ * dp[i][j]表示前i件物品(可以捡或者不捡), 背包容量为j, 获取到的最大价值
+ */
 int dp(int* weight, int* value, bool* used, int item_num, int bag_size) {
     int** dp = new int*[item_num + 1];
     for (int i = 0; i < item_num + 1; ++i) {
