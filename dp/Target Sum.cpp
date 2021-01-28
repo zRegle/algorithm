@@ -21,6 +21,7 @@
  *  (3)保证返回的最终结果能被 32 位整数存下。
  */
 #include <vector>
+#include <cmath>
 #include <unordered_map>
 #include <numeric>
 using namespace std;
@@ -48,7 +49,7 @@ public:
     int findTargetSumWays(vector<int>& nums, int S) {
         int sum = accumulate(nums.begin(), nums.end(), 0);
         /* S超过了数组之和 或者 sum + S不是偶数 */
-        if (S > sum || (sum + S) % 2 == 1) return 0;
+        if (abs(S) > sum || (sum + S) % 2 == 1) return 0;
         int target = (sum + S) / 2;
         int len = nums.size();
         vector<vector<int>> dp(len + 1, vector<int>(target + 1, 0));
@@ -66,7 +67,7 @@ public:
     /* 空间优化后的dp */
     int optimize(vector<int>& nums, int S) {
         int sum = accumulate(nums.begin(), nums.end(), 0);
-        if (S > sum || (sum + S) % 2 == 1) return 0;
+        if (abs(S) > sum || (sum + S) % 2 == 1) return 0;
         int target = (sum + S) / 2;
         vector<int> dp(target + 1, 0);
         dp[0] = 1;
