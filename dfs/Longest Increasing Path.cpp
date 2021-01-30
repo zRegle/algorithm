@@ -1,45 +1,73 @@
-#include <iostream>
+/**
+ * Leetcode 329. 矩阵中的最长递增路径
+ * 给定一个 m x n 整数矩阵 matrix ，找出其中 最长递增路径 的长度。
+ * 对于每个单元格，你可以往上，下，左，右四个方向移动。
+ * 你不能在对角线方向上移动或移动到边界外（即不允许环绕）。
+ *
+ * 示例 1：
+ *  输入：[[9,9,4],
+ *        [6,6,8],
+ *        [2,1,1]]
+ *  输出：4
+ *  解释：最长递增路径为 [1, 2, 6, 9]。
+ * 示例 2：
+ *  输入：[[3,4,5],
+ *        [3,2,6],
+ *        [2,2,1]]
+ *  输出：4
+ *  解释：最长递增路径是 [3, 4, 5, 6]。注意不允许在对角线方向上移动。
+ * 示例 3：
+ *  输入：matrix = [[1]]
+ *  输出：1
+ *
+ * 提示：
+ * (1)m == matrix.length
+ * (2)n == matrix[i].length
+ * (3)1 <= m, n <= 200
+ * (4)0 <= matrix[i][j] <= 2^31 - 1
+ */
 #include <vector>
-#include <climits>
 using namespace std;
 
-/*
- * leetcode 329. Longest Increasing Path in a Matrix
- * 给定一个矩阵, 求最长递增路径(每个格子可以往上下左右走)
- *
- * 初步想法: 遍历每一个格子, 暴力dfs递归所有结果, 求最大值, 结果超时了
- * 在原来的思路里, 我们会重复经过已经知道结果的格子, 所以我们要尽量缓存已经遍历过的结果
- * dp[i][j]表示以(i,j)结尾的, 最长递增路径的长度
- */
+/* dfs暴搜 + 记忆化搜索 */
 class Solution {
 public:
-    int row = -1;
-    int column = -1;
-
     int longestIncreasingPath(vector<vector<int>>& matrix) {
-        int max_len = INT_MIN;
-        row = matrix.size();
-        if (!row) return 0;
-        column = matrix[0].size();
-        if (!column) return 0;
-        vector<vector<int>> dp((unsigned int)row, vector<int>(column, 0));
+        row = matrix.size(), col = matrix[0].size();
+        memo.resize(row, vector<int>(col, 0));
         for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++)
-                max_len = max(max_len, dfs(matrix, dp, i, j));
+            for (int j = 0; j < col; j++) {
+                ans = max(ans, dfs(i, j, matrix));
+            }
         }
-        return max_len;
+        return ans;
     }
 
-    //实际上我们在递归的时候走的是递减的路线
-    int dfs(vector<vector<int>>& matrix, vector<vector<int>>& dp, int i, int j) {
-        if (dp[i][j]) return dp[i][j];
-        int cur = matrix[i][j];
-        if (i > 0 && cur > matrix[i-1][j]) dp[i][j] = max(dp[i][j], dfs(matrix, dp, i-1, j));
-        if (j > 0 && cur > matrix[i][j-1]) dp[i][j] = max(dp[i][j], dfs(matrix, dp, i, j-1));
-        if (i < row-1 && cur > matrix[i+1][j]) dp[i][j] = max(dp[i][j], dfs(matrix, dp, i+1, j));
-        if (j < column-1 && cur > matrix[i][j+1]) dp[i][j] = max(dp[i][j] ,dfs(matrix, dp, i, j+1));
-        dp[i][j]++;
-        return dp[i][j];
+private:
+    int row, col, ans = 0;
+    int direction[4][2] = {{-1,0},{0,1},{1,0},{0,-1}};
+    /* 记忆化, memo[x][y]表示从(x,y)开始的最长递增路径长度 */
+    vector<vector<int>> memo;
+    int dfs(int x, int y, vector<vector<int>>& matrix) {
+        if (memo[x][y] > 0)
+            return memo[x][y];
+        int val = matrix[x][y];
+        matrix[x][y] = -1; /* 就地更改, 充当visited数组 */
+        int length = 1; /* 从(x, y)始的最长递增路径长度 */
+        for (auto& d : direction) {
+            int i = x + d[0], j = y + d[1];
+            if (isIn(i, j)) {
+                if (matrix[i][j] > val)
+                    /* dfs() + 1是因为要算上当前网格 */
+                    length = max(length, dfs(i, j, matrix) + 1);
+            }
+        }
+        matrix[x][y] = val; /* 回溯 */
+        memo[x][y] = length;
+        return length;
+    }
+
+    inline bool isIn(int x, int y) const {
+        return x >= 0 && y >= 0 && x < row && y < col;
     }
 };
-
