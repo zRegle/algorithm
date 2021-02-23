@@ -50,45 +50,7 @@ public:
     }
 };
 
-/* 下面是满足进阶要求的做法 */
-
-/**
- * 设cnt(i)为数组中小于等于i的数字的数量, 我们要找的数字是t
- * 那么我们可以归纳出性质:
- *  (1) [1, t-1]内, 对于任意的i, 都有cnt(i) <= i
- *  (2) [t, n]内, 对于任意的j, 都有cnt(j) > j
- *
- * 对于性质(1), 若cnt(i) = i, 表明[1, i]内的所有数字都出现了
- *            若cnt(i) < i, 表明[1, i]中有某些数字被t替代了
- * 对于性质(2), 因为t至少出现了两次, 因此[t, n]中任意的j, 都有cnt(j) > j
- *
- * 我们在[1, n]的范围内不断二分, 直到找到t
- */
-class Solution2 {
-public:
-    int findDuplicate(vector<int>& nums) {
-        int left = 0, right = nums.size()-1;
-        int ans = 0;
-        while (left <= right) {
-            /* 注意, mid不一定出现在nums数组中 */
-            int mid = (left + right) / 2;
-            int cnt = 0;
-            for (int x : nums)
-                cnt += x <= mid;
-            if (cnt <= mid)
-                /* mid满足cnt(mid) <= mid, 证明mid∈[1, t-1]
-                 * 向右继续二分 */
-                left = mid + 1;
-            else {
-                /* mid满足cnt(mid) > mid, 证明mid∈[t, n]
-                 * 向左继续二分 */
-                right = mid - 1;
-                ans = mid; /* mid可能就是t, 先保存下来 */
-            }
-        }
-        return ans;
-    }
-};
+/* 下面是满足进阶要求的做法, 另外一种解法在二分查找文件夹 */
 
 /**
  * 比较tricky的做法, 将数组看成一个链表
@@ -109,7 +71,7 @@ public:
  * 详细解释参考链接:
  * https://leetcode-cn.com/problems/find-the-duplicate-number/solution/kuai-man-zhi-zhen-de-jie-shi-cong-damien_undoxie-d/
  */
-class Solution3 {
+class Solution2 {
 public:
     int findDuplicate(vector<int>& nums) {
         int slow = 0, fast = 0;
