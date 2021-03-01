@@ -5,13 +5,28 @@
 using namespace std;
 
 //space complexity: O(mn)
-//dp[i][j]表示只用前i种硬币凑出金额j的方法种数
+/**
+ * 我们很容易想到, 设dp[i]表示凑出金额i的组合数
+ *  dp[i] = sum{dp[i-c], c ∈ coins}
+ * 这样做是错误的, 例如amount = 3, coins = {1, 2}, 有
+ *  3 = 1 + 1 + 1
+ *  3 = 1 + 2
+ * dp[1] = 1
+ * dp[2] = 2 (用两个1或者用一个2)
+ * dp[3] = dp[1] + dp[2] = 3 (错误, 1 + 2这种组合算了两遍)
+ * 
+ * 应该重新定义子问题:
+ * dp[i][j]表示只用前i种硬币凑出金额j的方法种数,
+ * 我们只关心第i个硬币用没用, 不关心它的使用顺序
+ */
 class Solution {
 public:
     int change(vector<int>& coins, int amount) {
         if (coins.empty()) return 0;
         vector<vector<int>> dp(coins.size()+1, vector<int>(amount+1, 0));
         dp[0][0] = 1;
+        /* 外层循环是遍历硬币, 体现了:
+         * 只关心用不用这种硬币, 不关心它用的顺序和次数 */
         for (int i = 1; i <= coins.size(); i++) {
             dp[i][0] = 1;
             for (int j = 1; j <= amount; j++)
