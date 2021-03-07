@@ -140,10 +140,3 @@ public:
         return cut[size];
     }
 };
-
-int main() {
-    string str = "abcbaklmlk";
-    Solution2 s;
-    cout<<s.minCut(str)<<endl;
-    return 0;
-}
