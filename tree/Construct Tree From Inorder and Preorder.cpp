@@ -42,19 +42,22 @@ struct TreeNode {
 class Solution {
 public:
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        return buildTree(0, preorder.size(), 0, inorder.size(), preorder, inorder);
+        int size = preorder.size();
+        return buildTree(0, size, 0, size, preorder, inorder);
     }
 
     TreeNode* buildTree(int pre_start, int pre_end, int in_start, int in_end, vector<int>& preorder, vector<int>& inorder) {
         if (pre_start >= pre_end || in_start >= in_end) return nullptr;
         int root_val = preorder[pre_start]; //取头
-        auto pos = find(inorder.begin()+in_start, inorder.end()+in_end, root_val);  //在中序遍历中找到对应位置
-        int len = pos - inorder.begin() - in_start; //计算长度
+        int i = in_start;
+        while (inorder[i] != preorder[pre_start])
+            i++;
+        int len = i - in_start; //计算长度
         auto root = new TreeNode(root_val);
         //分两半, 递归
         //对应的位置关系画图比较好理解
-        auto left = buildTree(pre_start+1, pre_start+1+len, in_start, in_start+len, preorder, inorder);
-        auto right = buildTree(pre_start+1+len, pre_end, in_start+1+len, in_end, preorder, inorder);
+        auto left = buildTree(pre_start + 1, pre_start + len + 1, in_start, i, preorder, inorder);
+        auto right = buildTree(pre_start + len + 1, pre_end, i + 1, in_end, preorder, inorder);
         root->left = left; root->right = right;
         return root;
     }

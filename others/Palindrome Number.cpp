@@ -1,13 +1,8 @@
-//
-// Created by Administrator on 2018/8/4.
-//
-
 #include <iostream>
 using namespace std;
 /**
  * 输入a b, 求出[a, b]内所有回文数字
  */
-
 
 bool isPalindrome(int num) {
     int div = 1;

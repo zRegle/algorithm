@@ -25,10 +25,11 @@ public:
         int prev = 0, cur = 1;
         while (cur < size) {
             //cur指针一直移动到第一个跟prev不相等的元素
-            for (; cur < size && nums.at(prev) == nums.at(cur); cur++, duplicate++);
-            //将cur指向的元素复制到prev的下一个元素中(注意, 之前prev下一个元素有可能跟prev相同, 这样就可以覆盖掉重复的元素了)
+            for (; cur < size && nums[prev] == nums[cur]; cur++, duplicate++);
+            //将cur指向的元素复制到prev的下一个元素中
+            //(注意, 之前prev下一个元素有可能跟prev相同, 这样就可以覆盖掉重复的元素了)
             if (cur < size) {
-                nums.at(++prev) = nums.at(cur);
+                nums[++prev] = nums[cur];
                 cur++;
             }
         }
