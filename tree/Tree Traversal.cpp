@@ -104,15 +104,3 @@ public:
         }
     }
 };
-
-int main() {
-    TreeNode* n1 = new TreeNode(1);
-    TreeNode* n2 = new TreeNode(2);
-    TreeNode* n3 = new TreeNode(3);
-    n1->right = n2; n2->left = n3;
-    Solution s;
-    s.preoderTraversal(n1);
-    s.inorderTraversal(n1);
-    s.postorderTraversal(n1);
-    return 0;
-}
