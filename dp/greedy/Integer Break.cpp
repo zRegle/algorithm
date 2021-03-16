@@ -15,7 +15,20 @@
 using namespace std;
 
 //最初想法:
-//dp[i]表示长度为i时能够获取到最大值
+//dp[i]表示拆分正整数i的最大乘积
+int mySolution(int n) {
+    if (n <= 3) return n - 1; //edge case
+    vector<int> dp(n + 1, 0);
+    dp[2] = 2; dp[3] = 3;
+    for (int i = 4; i <= n; i++) {
+        for (int j = 1; j <= i / 2; j++) {
+            dp[i] = max(dp[i], dp[j] * dp[i - j]);
+        }
+    }
+    return dp[n];
+}
+
+//dp[i]表示将正整数i拆分成至少两个正整数的和之后，这些正整数的最大乘积
 class Solution {
 public:
     int integerBreak(int n) {
@@ -24,8 +37,8 @@ public:
         for (int i = 2; i <= n; i++) {
             for (int j = 1; j <= i/2; j++) {
                 //i分成两部分, 第一部分是j, 第二部分是i-j
-                //我们可以选择第一部分不拆分, 然后第二部分可拆可不拆(j*dp[i-j])
-                //或者第一部分可拆可不拆, 第二部分不拆分(dp[j]*(i-j))
+                //将i拆成i和i-j之后, i-j继续拆分成多个整数(j*dp[i-j])
+                //将i拆成i和i-j之后, i-j不继续拆分(j*(i-j))
                 dp[i] = max(dp[i], max(j * (i-j), j * dp[i-j]));
             }
         }
