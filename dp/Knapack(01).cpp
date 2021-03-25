@@ -10,8 +10,11 @@ int dp(int* weight, int* value, bool* used, int item_num, int bag_size) {
         dp[i] = new int[bag_size + 1]();
     }
     for (int i = 1; i <= item_num; ++i) {
-        for (int j = weight[i]; j <= bag_size; ++j) {
-            dp[i][j] = max(dp[i - 1][j - weight[i]] + value[i], dp[i - 1][j]);
+        for (int j = 0; j <= bag_size; ++j) {
+            dp[i][j] = dp[i - 1][j]; //第i件物品放不进背包
+            if (j >= weight[i])
+                //第i件物品放得进背包, 可以放进去可以不放进去
+                dp[i][j] = max(dp[i - 1][j - weight[i]] + value[i], dp[i - 1][j]);
             cout<<dp[i][j]<<" ";
         }
         cout<<endl;
@@ -47,6 +50,7 @@ int dp2(int* w, int* v, bool* used, int n, int c) {
      */
     for (int i = 1; i <= n; ++i) {
         for (int j = c; j >= w[i]; --j) {
+            //因为dp[j]保存了上一行的结果, 因此可以遍历到w[i]就结束
             dp[j] = max(dp[j], dp[j-w[i]]+v[i]);
             //等式右边的dp[j]相当于dp[i-1][j]
             //dp[j-w[i]]+v[i]相当于dp[i-1][j-w[i]]+v[i]    
