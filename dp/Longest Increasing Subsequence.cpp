@@ -23,12 +23,15 @@
 #include <vector>
 using namespace std;
 
+/* O(nlogn的方法查看二分查找文件夹) */
+
 /**
  * dp[i]: 以i结尾的最长递增子序列
  * 遍历[0,i)的任意dp[j], 如果nums[j] < nums[i]
  * 则dp[i] = dp[j] + 1, 取所有j中的最大值dp[j]
+ * 时间复杂度: O(n²)
  */
-class Solution {
+class Solution0 {
 public:
     int lengthOfLIS(vector<int>& nums) {
         int len = nums.size();
