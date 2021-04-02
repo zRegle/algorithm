@@ -18,8 +18,8 @@ public:
         } else {
             if (val >= x) {
                 //x <= 当前最小值
-                val = x; //更新最小值
                 auxiliary.push(val); //保存次小值在辅助栈中
+                val = x; //更新最小值
             }
         }
         data.push(x);
