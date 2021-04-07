@@ -29,7 +29,6 @@ public:
                 int size = right - left + 1;
                 v.resize(size, 0);
                 for (int i = 0; i < size; i++) {
-                    v[i] = i + left;
                 }
                 ans.push_back(v);
             } else if (sum > target) {
