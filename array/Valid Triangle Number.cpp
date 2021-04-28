@@ -52,7 +52,7 @@ public:
                      *  nums[k] - nums[j] < nums[i]
                      *  nums[k] - nums[i] < nums[j]
                      * 因此(j, lower)之间的任意k都可以与i, j组成三角形 */
-                    count += distance(nums.begin(), lower) - j - 1;
+                    count += distance(nums.begin(), lower)-j-1;
             }
         }
         return count;
@@ -63,8 +63,8 @@ public:
  * 双指针:
  * 首先对数组排序, 接着固定最长的一条边，运用双指针扫描
  *  (1)如果 nums[l] + nums[r] > nums[i],
- *       说明 nums[l + 1] + nums[r] > nums[i], ..., nums[r - 1] + nums[r] > nums[i]，
- *       满足的条件的有 r - l 种，r左移进入下一轮。
+ *     说明 nums[l + 1] + nums[r] > nums[i], ..., nums[r - 1] + nums[r] > nums[i]，
+ *     满足的条件的有 r - l 种，r左移进入下一轮。
  *  (2)如果 nums[l] + nums[r] <= nums[i]，l右移进入下一轮。
  * 枚举结束后，总和就是答案。
  * 时间复杂度为 O(n²)
