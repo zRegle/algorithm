@@ -32,7 +32,7 @@ using namespace std;
  * 优雅的dp, 转化成01背包问题
  * 找到nums一个正子集和一个负子集，使得总和等于target，统计这种可能性的总数。
  * 我们假设P是正子集，N是负子集。让我们看看如何将其转换为子集求和问题：
- *           sum(P) - sum(N) = target（两边同时加上sum(P)+sum(N)）
+ *           sum(P) - sum(N) = target (两边同时加上sum(P)+sum(N))
  * sum(P) + sum(N) + sum(P) - sum(N) = target + sum(P) + sum(N)
  *          2 * sum(P) = target + sum(nums) (因为 sum(P) + sum(N) = sum(nums))
  * 因此，原来的问题已转化为一个求子集的和问题： 找到nums的一个子集 P，使得
