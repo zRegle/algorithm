@@ -13,7 +13,8 @@ using namespace std;
  *  3 = 1 + 2
  * dp[1] = 1
  * dp[2] = 2 (用两个1或者用一个2)
- * dp[3] = dp[1] + dp[2] = 3 (错误, 1 + 2这种组合算了两遍)
+ * dp[3] = dp[1] + dp[2] = 3 
+ * (错误, 先凑1再凑2和先凑2再凑1没本质区别, 1 + 2这种情况算了两次)
  * 
  * 应该重新定义子问题:
  * dp[i][j]表示只用前i种硬币凑出金额j的方法种数,
@@ -22,17 +23,24 @@ using namespace std;
 class Solution {
 public:
     int change(vector<int>& coins, int amount) {
-        if (coins.empty()) return 0;
-        vector<vector<int>> dp(coins.size()+1, vector<int>(amount+1, 0));
+        int n = coins.size();
+        if (n == 0) return 0;
+        vector<vector<int>> dp(n+1, vector<int>(amount+1));
         dp[0][0] = 1;
         /* 外层循环是遍历硬币, 体现了:
          * 只关心用不用这种硬币, 不关心它用的顺序和次数 */
-        for (int i = 1; i <= coins.size(); i++) {
-            dp[i][0] = 1;
-            for (int j = 1; j <= amount; j++)
-                dp[i][j] = dp[i-1][j] + (j > coins[i-1] ? dp[i][j-coins[i-1]] : 0);
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j <= amount; j++) {
+                /* 第i种硬币不用, 显然
+                 * dp[i][j] = dp[i-1][j] */
+                dp[i][j] = dp[i-1][j];
+                if (j >= coins[i-1])
+                    /* 用第i种硬币
+                     * 方案数增加dp[i][j-coins[i-1]] */
+                    dp[i][j] += dp[i][j-coins[i-1]];
+            }
         }
-        return dp[coins.size()][amount];
+        return dp[n][amount];
     }
 };
 
