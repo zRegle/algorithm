@@ -2,7 +2,14 @@
 #include <vector>
 using namespace std;
 
-int dp(vector<int> w, vector<int> v, vector<int> n, int c) {
+/**
+ * @param w 各个物品的重量
+ * @param v 各个物品的价值
+ * @param n 各个物品的数量
+ * @param c 背包总容量
+ * @return 能够获取到的最大价值
+ */
+int dp(vector<int>& w, vector<int>& v, vector<int>& n, int c) {
     int num = w.size()-1;
     vector<vector<int>> dp(w.size());
     for (int i = 0; i < w.size(); i++) {
