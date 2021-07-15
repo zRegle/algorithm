@@ -1,5 +1,6 @@
 /* 各种排序算法集合 */
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 /* 归并排序 */
@@ -113,4 +114,28 @@ void heap_sort(vector<int>& nums) {
         swap(nums[0], nums[i]);
         heap_down(0, nums, i-1);
     }
+}
+
+/* 计数排序 —— 时间O(n), 空间O(n)
+ * 统计各个数字出现的次数
+ * 往结果数组中填数字 
+ */
+vector<int> countSort(vector<int>& arr) {
+    int maxVal = *max_element(arr.begin(), arr.end());
+    int minVal = *min_element(arr.begin(), arr.end());
+    /* 数组中元素范围是[minVal, maxVal], 建立哈希表 */
+    vector<int> cnt(maxVal - minVal + 1);
+    /* 统计元素出现的次数 */
+    for (int x : arr) {
+        cnt[x - minVal]++;
+    }
+    int n = arr.size();
+    vector<int> res(n);
+    int idx = 0;
+    /* 往结果数组中填数字 */
+    for (int i = 0; i < cnt.size(); i++) {
+        while (cnt[i]--) 
+            res[idx++] = i + minVal;
+    }
+    return res;
 }
