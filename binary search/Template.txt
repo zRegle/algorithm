@@ -1,0 +1,35 @@
+二分有套路:
+ (1)找存不存在:
+    while (l <= r)
+      mid = (l+r)/2
+      if (mid == x) return mid
+      elif (mid > x) r = mid-1
+      else l = mid+1
+    我们每次二分都会直接略过mid, 最后返回mid
+
+ (2)找位置:
+   1.只有两个数时, mid落在l
+    while (l < r)
+      mid = (l+r)/2
+      if (mid < x) l = mid+1
+      else r = mid
+    退出后, 位置会偏向l, 我们返回l
+   2.只有两个数时, mid落在r
+    while (l < r)
+      mid = (l+r)/2
+      if (mid > x) r = mid-1
+      else l = mid
+     退出后, 位置会偏向r, 我们返回r
+
+ 注意, 收缩条件不能改
+ 在第一种情况, 对于数组[1,2], x = 1,
+ 假设我们改成
+  if (mid > x) r = mid-1;
+  else l = mid
+ 那么mid = 0, 我们进入else分支, 就陷入了死循环
+ 本质上因为mid本来就是靠近l的, 我们使l = mid就没有进行任何收缩, 所以死循环了
+ 同理对于第二种情况, 对于数组[1,2], x = 2
+ 假设我们改成
+  if (mid < x) l = mid+1
+  else r = mid
+ 那么mid = 1, 我们进入else分支, 同样陷入了死循环

@@ -30,9 +30,22 @@ using namespace std;
  *     如果我们选择了右移, 那么target可能就在右移前位置的下面
  *     总而言之, 我们无法从matrix[i][j] < target这个信息中获取足够的剪枝信息. 从右下开始也同理
  *  (2)但是如果我们从左下开始, 遇到matrix[i][j] < target时,
- *     我们必然知道matrix[i][j]的上面肯定都小于target, 我们只有一种选择就是右移
- *     同理, 如果matrix[i][j] > target, 那么matrix[i][j]的右面肯定都大于target, 我们只能上移
+ *     我们必然知道matrix[i][j]的上面肯定都小于target, 我们只能右移或者下移
+ *     但是下移是不正确的, 因为matrix[i][j]必然是从第i+1行转移来的, 假设在matrix[i+1][j']时转移到第i行
+ *     那么表明之前发现了matrix[i+1][j'] = val > target(j > j')了, 如果我们在matrix[i][j]时下移,
+ *     就必然有matrix[i+1][j] > matrix[i+1][j'] > target
+ *     所以向下转移是错误的, 因此我们只能右移
+ * 
+ *     同理, 如果matrix[i][j] > target, 那么matrix[i][j]的右面肯定都大于target, 我们只能上移或者左移
+ *     但是我们左移是不对的, 因为matrix[i][j]必然从matrix[i-1][j]转移过来, 为什么matrix[i-1][j]需要转移?
+ *     很明显, 因为matrix[i-1][j] < target, 所以我们左移是没道理的, 因此上移
  */
+
+/* 更形象的解释:
+ * 假设我们从右上角开始, 我们可以将矩阵逆时针旋转45度
+ * 以右上角为根节点, 将整个矩阵看成一棵二叉搜索树
+ * 图解:
+ * https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/solution/mian-shi-ti-04-er-wei-shu-zu-zhong-de-cha-zhao-zuo/ */
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
