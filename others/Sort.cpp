@@ -139,3 +139,27 @@ vector<int> countSort(vector<int>& arr) {
     }
     return res;
 }
+
+/* 插入排序:
+ * 考察元素i, 在已经排好序的[0, i-1]区间中寻找合适的位置插入 */
+void insertionSort(vector<int>& arr) {
+    int n = arr.size();
+    /* 从第二个元素开始遍历, 区间[0,0]是已经排好序的 */
+    for (int i = 1; i < n; i++) {
+        if (arr[i] < arr[i-1]) {
+            /* 在[0, i-1]区间寻找适合arr[i]插入的位置 */
+            int tmp = arr[i];
+            int j;
+            /* j从i-1开始 */
+            for (j = i-1; j >= 0; j--) {
+                if (arr[j] > tmp)
+                    /* arr[j] > tmp, arr[j]需要后移 */
+                    arr[j+1] = arr[j];
+                else
+                    break;
+            }
+            /* 找到合适的位置, 插入 */
+            arr[j+1] = tmp;
+        }
+    }
+}
