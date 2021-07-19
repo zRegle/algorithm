@@ -37,12 +37,12 @@ class Solution {
                 q.push(node);
         }
         auto dummy = new ListNode(0);
-        auto tail = dummy;
+        auto cur = dummy;
         while (!q.empty()) {
-            tail->next = q.top(); q.pop();
-            tail = tail->next;
-            if (tail->next)
-                q.push(tail->next);
+            cur->next = q.top(); q.pop();
+            cur = cur->next;
+            if (cur->next)
+                q.push(cur->next);
         }
         return dummy->next;
     }

@@ -10,7 +10,7 @@ struct ListNode {
 };
 
 //具体证明看这个网址
-//https://leetcode-cn.com/problems/linked-list-cycle-ii/solution/huan-xing-lian-biao-ii-by-leetcode/
+//https://leetcode-cn.com/problems/linked-list-cycle-ii/solution/linked-list-cycle-ii-kuai-man-zhi-zhen-shuang-zhi-/
 class Solution {
 public:
     ListNode* detectCycle(ListNode* head) {

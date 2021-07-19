@@ -126,17 +126,3 @@ public:
         }
     }
 };
-
-int main() {
-    auto n1 = new ListNode(1), n2 = new ListNode(2);
-    auto n3 = new ListNode(3), n4 = new ListNode(4);
-    n1->next = n2; n2->next = n3; n3->next = n4;
-    Solution1 sol;
-    sol.reorderList(n1);
-    auto cur = n1;
-    while (cur) {
-        cout<<cur->val<<" ";
-        cur = cur->next;
-    }
-    return 0;
-}
