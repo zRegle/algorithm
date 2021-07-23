@@ -163,3 +163,39 @@ void insertionSort(vector<int>& arr) {
         }
     }
 }
+
+/**
+ * 冒泡排序: 比较相邻的元素, 如果第一个比第二个大, 就交换位置
+ * 每一趟都从idx 0开始, 每趟可以确定一个数字的位置, 总共要进行n-1趟
+ */
+void bubble_sort(vector<int>& arr) {
+    int n = arr.size();
+    /* 总共进行n-1趟 */
+    for (int i = 1; i < n; i++) {
+        /* 每趟从idx 0开始比较 */
+        for (int j = 0; j < n-i; j++) {
+            if (arr[j] > arr[j+1])
+                swap(arr[j], arr[j+1]);
+        }
+    }
+}
+
+/**
+ * 选择排序: 从未排序序列中选取一个最小值, 插入到已排序序列的末尾
+ */
+void select_sort(vector<int>& arr) {
+    int n = arr.size();
+    int minIdx;
+    /* 每趟确定一个数的位置, 总共需要n-1趟 */
+    for (int i = 0; i < n-1; i++) {
+        minIdx = i;
+        /* 从未排序序列中选取最小值 */
+        for (int j = i; j < n; j++) {
+            if (arr[j] < arr[minIdx]) {
+                minIdx = j;
+            }
+        }
+        /* 插入到排序序列的末尾 */
+        swap(arr[i], arr[minIdx]);
+    }
+}
