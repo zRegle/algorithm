@@ -56,10 +56,4 @@ private:
         nums[n] = cnt;
         return cnt;
     }
-}
-
-int main() {
-    Solution solution;
-    cout<<solution.numTrees(3)<<endl;
-    return 0;
-}
+};
