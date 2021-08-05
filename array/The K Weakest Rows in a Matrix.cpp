@@ -78,9 +78,8 @@ public:
         /* 大顶堆 */
         priority_queue<pair<int,int>, vector<pair<int,int>>> q;
         for (int i = 0; i < m; i++) {
-            /* move: 使pair调用移动构造函数
-             * forward: 保持右值引用类型传到函数中 */
-            q.push(forward<pair<int,int>&&>(move(power[i])));
+            /* move: 使pair调用移动构造函数 */
+            q.push(move(power[i]));
             if (q.size() > k)
                 q.pop();
         }
