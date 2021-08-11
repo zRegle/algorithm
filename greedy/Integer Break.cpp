@@ -37,8 +37,8 @@ public:
         for (int i = 2; i <= n; i++) {
             for (int j = 1; j <= i/2; j++) {
                 //i分成两部分, 第一部分是j, 第二部分是i-j
-                //将i拆成i和i-j之后, i-j继续拆分成多个整数(j*dp[i-j])
-                //将i拆成i和i-j之后, i-j不继续拆分(j*(i-j))
+                //将i拆成j和i-j之后, i-j继续拆分成多个整数(j*dp[i-j])
+                //将i拆成j和i-j之后, i-j不继续拆分(j*(i-j))
                 dp[i] = max(dp[i], max(j * (i-j), j * dp[i-j]));
             }
         }

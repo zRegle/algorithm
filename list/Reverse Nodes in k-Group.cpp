@@ -28,9 +28,14 @@ public:
         auto tail = head;
         //将节点一个一个移到链表头
         while (count > 0) {
+            /* 每次循环只翻转cur和next, 其余保持不变 */
+            /* 暂存next_next */
             auto next_next = tail->next->next;
+            /* 翻转cur和next */
             tail->next->next = head;
+            /* 移动到下一个节点 */
             head = tail->next;
+            /* 翻转了cur和next之后, 新的next指向next_next */
             tail->next = next_next;
             count--;
         }
