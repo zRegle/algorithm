@@ -32,31 +32,49 @@ public:
     double findMedianSortedArrays(vector<int>& A, vector<int>& B) {
         int m = A.size();
         int n = B.size();
-        if (m > n) { //确保m<=n, 不然会数组越界
+        if (m > n) {
+            /* 因为0 <= i <= m, 且j = (m + n + 1) / 2 - i
+             * 为了保证0 <= j <= n, 必须保证m <= n
+             * 因此如果m > n, 交换两个数组 */
             return findMedianSortedArrays(B,A);
         }
         //i是A的分割位, j是B的分割位
-        int iMin = 0, iMax = m, halfLen = (m + n + 1) / 2;
+        int iMin = 0, iMax = m;
+        /* m + n + 1是为了合并m + n是偶数和m+n是奇数两种情况
+         * 如果m + n是奇数, 保证左半部分的长度比右半部分的长度大1, 即
+         * i + j = m - i + n - j + 1, 即j = (m + n + 1) / 2
+         * 如果m + n是偶数, 因为用的是int型, +1也不会影响结果 */
+        int halfLen = (m + n + 1) / 2;
         while (iMin <= iMax) {
             int i = (iMin + iMax) / 2;	//每次都从中间开始分割
             int j = halfLen - i;	//确保i+j == (m+n)/2
             if (i < iMax && B[j-1] > A[i]){
-                iMin = iMin + 1; // i is too small
+                iMin++; // i is too small
             }
             else if (i > iMin && A[i-1] > B[j]) {
-                iMax = iMax - 1; // i is too big
+                iMax--; // i is too big
             }
             else { // i is perfect
                 int maxLeft = 0;
-                if (i == 0)  maxLeft = B[j-1]; //A数组最小的元素都比B数组的左半部分大, max_left直接取B[j-1]
-                else if (j == 0)  maxLeft = A[i-1]; //B的最小元素都比A数组的左半部分大, max_left直接取A[i-1]
-                else  maxLeft = max(A[i-1], B[j-1]); 
-                if ((m + n) % 2 == 1)  return maxLeft; //如果是奇数, max_left就是中位数
+                if (i == 0)
+                    //A数组最小的元素都比B数组的左半部分大, max_left直接取B[j-1] 
+                    maxLeft = B[j-1]; 
+                else if (j == 0)
+                    //B的最小元素都比A数组的左半部分大, max_left直接取A[i-1]
+                    maxLeft = A[i-1]; 
+                else  
+                    maxLeft = max(A[i-1], B[j-1]); 
+                if ((m + n) & 1)  return maxLeft; //如果是奇数, max_left就是中位数
 
                 int minRight = 0;
-                if (i == m)  minRight = B[j]; //A数组的最大元素都比B数组的右半部分的最小元素要小, min_right直接取B[j]
-                else if (j == n)  minRight = A[i]; //B数组的最大元素都比A数组的右半部分的最小元素要小, min_right直接取A[i]
-                else  minRight = min(B[j], A[i]); 
+                if (i == m)
+                    //A数组的最大元素都比B数组的右半部分的最小元素要小, min_right直接取B[j]  
+                    minRight = B[j]; 
+                else if (j == n)
+                    //B数组的最大元素都比A数组的右半部分的最小元素要小, min_right直接取A[i]  
+                    minRight = A[i];
+                else  
+                    minRight = min(B[j], A[i]); 
 
                 return (maxLeft + minRight) / 2.0;
             }
